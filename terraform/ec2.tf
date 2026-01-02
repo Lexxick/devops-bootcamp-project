@@ -1,4 +1,4 @@
-resource "aws_instance" "WebServer" {
+resource "aws_instance" "web-server" {
   ami                    = "ami-00d8fc944fb171e29"
   instance_type          = "t3.micro"
   subnet_id              = aws_subnet.devops-public-subnet.id
@@ -6,12 +6,12 @@ resource "aws_instance" "WebServer" {
   private_ip             = "10.0.0.5"
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
-  tags = { Name = "WebServer" 
-  Role = "Web"
+  tags = { Name = "web-server" 
+  Role = "web"
   }
 }
 
-resource "aws_instance" "AnsibleController" {
+resource "aws_instance" "ansible-controller" {
   ami                    = "ami-00d8fc944fb171e29"
   instance_type          = "t3.micro"
   subnet_id              = aws_subnet.devops-private-subnet.id
@@ -20,12 +20,12 @@ resource "aws_instance" "AnsibleController" {
   associate_public_ip_address = false
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
-  tags = { Name = "AnsibleController" 
-  Role = "Ansible"
+  tags = { Name = "ansible-controller" 
+  Role = "ansible"
   }
 }
 
-resource "aws_instance" "MonitoringServer" {
+resource "aws_instance" "monitoring-server" {
   ami                    = "ami-00d8fc944fb171e29"
   instance_type          = "t3.micro"
   subnet_id              = aws_subnet.devops-private-subnet.id
@@ -34,7 +34,7 @@ resource "aws_instance" "MonitoringServer" {
   associate_public_ip_address = false
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
-  tags = { Name = "MonitoringServer" 
-  Role = "Monitoring"
+  tags = { Name = "monitoring-server" 
+  Role = "monitoring"
   }
 }

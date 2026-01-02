@@ -1,0 +1,11 @@
+- hosts: all
+  roles:
+    - docker
+
+- hosts: web
+  roles:
+    - web
+
+- hosts: monitoring
+  roles:
+    - monitoring
