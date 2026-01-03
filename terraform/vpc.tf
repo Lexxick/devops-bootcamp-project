@@ -46,8 +46,12 @@ resource "aws_eip" "devops-ngw" {
 }
 
 resource "aws_nat_gateway" "devops-ngw" {
-  allocation_id = aws_eip.devops-ngw.id
+  allocation_id = aws_eip.devops-ngw.allocation_id
   subnet_id     = aws_subnet.devops-public-subnet.id
+
+  tags = {
+    Name = "devops-ngw"
+  }
 }
 
 resource "aws_route_table" "devops-public-route" {

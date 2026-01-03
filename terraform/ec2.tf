@@ -19,6 +19,14 @@ resource "aws_instance" "ansible-controller" {
   private_ip             = "10.0.0.135"
   associate_public_ip_address = false
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
+  
+ # User data script to install prerequisites
+  user_data = <<-EOF
+    #!/bin/bash
+    sudo yum update -y
+    sudo amazon-linux-extras install ansible2 -y
+    sudo yum install git python3-boto3 -y
+  EOF
 
   tags = { Name = "ansible-controller" 
   Role = "ansible"
