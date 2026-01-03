@@ -59,6 +59,10 @@ Ansible :
 │   └── docker-compose-monitoring.yml.j2
 └── README.md
 
- 2. git clone https://github.com/Lexxick/devops-bootcamp-project.git #clone ansible file
+ 2. aws ssm start-session --target <i-1234567890abcdef0> #replace instance id
+    git clone https://github.com/Lexxick/devops-bootcamp-project.git #clone ansible file
     cd ansible
     ansible-playbook main.yaml
+
+
+STUCK AT INVENTORY.INI CREATED DLM LOCAL BKN EC2
