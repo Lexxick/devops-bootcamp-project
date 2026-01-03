@@ -23,9 +23,11 @@ resource "aws_instance" "ansible-controller" {
  # User data script to install prerequisites
   user_data = <<-EOF
     #!/bin/bash
-    sudo yum update -y
-    sudo amazon-linux-extras install ansible2 -y
-    sudo yum install git python3-boto3 -y
+    sudo apt update -y
+    sudo apt install software-properties-common -y
+    sudo add-apt-repository --yes --update ppa:ansible/ansible
+    sudo apt install ansible -y
+
   EOF
 
   tags = { Name = "ansible-controller" 
