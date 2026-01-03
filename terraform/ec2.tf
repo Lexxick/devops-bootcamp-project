@@ -4,7 +4,8 @@ resource "aws_instance" "web-server" {
   subnet_id              = aws_subnet.devops-public-subnet.id
   security_groups        = [aws_security_group.devops-public-sg.id]
   private_ip             = "10.0.0.5"
-  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
+  key_name               = aws_key_pair.ansible.key_name
+  iam_instance_profile   = aws_iam_instance_profile.ec2_profile.name
 
   tags = { Name = "web-server" 
   Role = "web"
@@ -12,21 +13,23 @@ resource "aws_instance" "web-server" {
 }
 
 resource "aws_instance" "ansible-controller" {
-  ami                    = "ami-00d8fc944fb171e29"
-  instance_type          = "t3.micro"
-  subnet_id              = aws_subnet.devops-private-subnet.id
-  security_groups        = [aws_security_group.devops-private-sg.id]
-  private_ip             = "10.0.0.135"
+  ami                         = "ami-00d8fc944fb171e29"
+  instance_type               = "t3.micro"
+  subnet_id                   = aws_subnet.devops-private-subnet.id
+  security_groups             = [aws_security_group.devops-private-sg.id]
+  private_ip                  = "10.0.0.135"
+  key_name                    = aws_key_pair.ansible.key_name
   associate_public_ip_address = false
-  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
+  iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
   
  # User data script to install prerequisites
   user_data = <<-EOF
     #!/bin/bash
-    sudo apt update -y
-    sudo apt install software-properties-common -y
-    sudo add-apt-repository --yes --update ppa:ansible/ansible
-    sudo apt install ansible -y
+    sudo apt update && sudo apt upgrade -y
+    sudo apt install pipx
+    pipx install --include-deps ansible
+    pipx ensurepath
+
 
   EOF
 
@@ -36,13 +39,14 @@ resource "aws_instance" "ansible-controller" {
 }
 
 resource "aws_instance" "monitoring-server" {
-  ami                    = "ami-00d8fc944fb171e29"
-  instance_type          = "t3.micro"
-  subnet_id              = aws_subnet.devops-private-subnet.id
-  security_groups        = [aws_security_group.devops-private-sg.id]
-  private_ip             = "10.0.0.136"
+  ami                         = "ami-00d8fc944fb171e29"
+  instance_type               = "t3.micro"
+  subnet_id                   = aws_subnet.devops-private-subnet.id
+  security_groups             = [aws_security_group.devops-private-sg.id]
+  private_ip                  = "10.0.0.136"
+  key_name                    = aws_key_pair.ansible.key_name
   associate_public_ip_address = false
-  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
+  iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
 
   tags = { Name = "monitoring-server" 
   Role = "monitoring"

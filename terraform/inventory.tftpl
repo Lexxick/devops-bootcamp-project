@@ -1,0 +1,13 @@
+[web]
+${web_server.tags.Name} ansible_host=${web_server.private_ip}
+
+[ansible]
+${ansible_controller.tags.Name} ansible_host=${ansible_controller.private_ip}
+
+[monitoring]
+${monitoring_server.tags.Name} ansible_host=${monitoring_server.private_ip}
+
+[all:vars]
+ansible_user=ubuntu
+ansible_ssh_private_key_file=${ssh_private_key}
+ansible_python_interpreter=/usr/bin/python3

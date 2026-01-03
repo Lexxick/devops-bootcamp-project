@@ -1,3 +1,20 @@
+---
+- name: Ensure SSH is running
+  hosts: all
+  become: yes
+  tasks:
+    - name: Start and enable SSH service
+      ansible.builtin.service:
+        name: ssh
+        state: started
+        enabled: yes
+
+- name: Initial Setup
+  hosts: all
+  become: true
+  vars:
+    web_port: 80
+
 - name: Install prerequisites
   apt:
     name: ca-certificates

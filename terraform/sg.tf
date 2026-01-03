@@ -14,7 +14,7 @@ resource "aws_security_group" "devops-public-sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [aws_vpc.devops-vpc.cidr_block]
+    cidr_blocks = [aws_subnet.devops-private-subnet.cidr_block]
   }
 
   egress {
@@ -38,7 +38,7 @@ resource "aws_security_group" "devops-private-sg" {
     from_port       = 22
     to_port         = 22
     protocol        = "tcp"
-    cidr_blocks = [aws_vpc.devops-vpc.cidr_block]
+    cidr_blocks = [aws_subnet.devops-private-subnet.cidr_block]
   }
 
   egress {
