@@ -35,6 +35,10 @@ Terraform :
  terraform apply --auto-approve
 ....
 
+Docker Image to ECR :
+
+git clone https://github.com/Infratify/lab-final-project 
+
 aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 516267217090.dkr.ecr.ap-southeast-1.amazonaws.com
 
 docker build -t devops-bootcamp-project-syedazam .
@@ -46,4 +50,15 @@ docker push 516267217090.dkr.ecr.ap-southeast-1.amazonaws.com/devops-bootcamp-pr
 ....
 
 Ansible :
- 1. 
+ 1. ansible/
+├── ansible.cfg
+├── inventory.ini        # Terraform generates this
+├── deploy.yaml          # One combined playbook
+├── templates/
+│   ├── docker-compose-web.yml.j2
+│   └── docker-compose-monitoring.yml.j2
+└── README.md
+
+ 2. git clone https://github.com/Lexxick/devops-bootcamp-project.git #clone ansible file
+    cd ansible
+    ansible-playbook main.yaml

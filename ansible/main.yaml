@@ -1,39 +1,75 @@
 ---
-- name: Ensure SSH is running
-  hosts: all
-  become: yes
-  tasks:
-    - name: Start and enable SSH service
-      ansible.builtin.service:
-        name: ssh
-        state: started
-        enabled: yes
-
-- name: Initial Setup
+#Master Playbook
+- name: Configure all servers
   hosts: all
   become: true
-  vars:
-    web_port: 80
+  tasks:
 
-- name: Install prerequisites
-  apt:
-    name: ca-certificates
-    state: present
-    update_cache: yes
+    # 1️⃣ Common packages
+    - name: Update apt cache
+      apt:
+        update_cache: yes
 
-- name: Install Docker
-  apt:
-    name: docker.io
-    state: present
+    - name: Install basic packages
+      apt:
+        name:
+          - git
+          - curl
+          - unzip
+        state: present
 
-- name: Start Docker
-  service:
-    name: docker
-    state: started
-    enabled: true
+    # 2️⃣ Install Docker
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
 
-- name: Add ubuntu to docker group
-  user:
-    name: ubuntu
-    groups: docker
-    append: yes
+    - name: Enable Docker
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Add user to docker group
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
+
+- name: Deploy Web Server
+  hosts: web
+  become: true
+  tasks:
+    - name: Create app directory
+      file:
+        path: /opt/my-app
+        state: directory
+
+    - name: Render web docker-compose
+      template:
+        src: docker-compose-web.yml.j2
+        dest: /opt/my-app/docker-compose.yml
+
+    - name: Start web Docker stack
+      command: docker compose up -d
+      args:
+        chdir: /opt/my-app
+
+- name: Deploy Monitoring Server
+  hosts: monitoring
+  become: true
+  tasks:
+    - name: Create monitoring directory
+      file:
+        path: /opt/monitoring
+        state: directory
+
+    - name: Render monitoring docker-compose
+      template:
+        src: docker-compose-monitoring.yml.j2
+        dest: /opt/monitoring/docker-compose.yml
+
+    - name: Start monitoring Docker stack
+      command: docker compose up -d
+      args:
+        chdir: /opt/monitoring

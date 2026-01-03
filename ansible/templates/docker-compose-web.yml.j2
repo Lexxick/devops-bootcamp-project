@@ -1,0 +1,14 @@
+version: "3"
+services:
+  app:
+    image: 516267217090.dkr.ecr.ap-southeast-1.amazonaws.com/devops-bootcamp-project-syedazam:latest
+    container_name: my-app
+    restart: always
+    ports:
+      - "3000:3000"
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: always
+    network_mode: host

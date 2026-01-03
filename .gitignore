@@ -1,0 +1,28 @@
+##################################
+# Terraform
+##################################
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/.terraform.lock.hcl
+
+##################################
+# Ansible
+##################################
+ansible/inventory.ini
+ansible/*.pem
+ansible/**/*.pem
+
+##################################
+# Secrets & credentials
+##################################
+*.pem
+*.key
+*.env
+
+##################################
+# OS / Editor
+##################################
+.DS_Store
+.vscode/
+.idea/
