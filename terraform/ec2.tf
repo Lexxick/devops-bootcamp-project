@@ -29,7 +29,8 @@ resource "aws_instance" "ansible-controller" {
     sudo apt install pipx
     pipx install --include-deps ansible
     pipx ensurepath
-
+    sudo apt install git -y
+    git clone https://github.com/Lexxick/devops-bootcamp-project.git
 
   EOF
 
