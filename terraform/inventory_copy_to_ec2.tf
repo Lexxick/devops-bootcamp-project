@@ -11,12 +11,10 @@ resource "aws_ssm_document" "copy_inventory_to_ansible_controller" {
         name   = "writeInventory"
         inputs = {
           runCommand = [
-            # ensure directory exists (repo already cloned by user_data)
             "mkdir -p /home/ubuntu/devops-bootcamp-project/ansible",
-
-            # write inventory.ini from Terraform local file content
             "cat <<'EOF' > /home/ubuntu/devops-bootcamp-project/ansible/inventory.ini",
-            file("${path.module}/inventory.ini"),
+            # FIX: Remove file() and quotes. Use the resource attribute directly.
+            local_file.ansible_inventory.content, 
             "EOF"
           ]
         }
@@ -33,9 +31,11 @@ resource "aws_ssm_association" "run_inventory_copy" {
     values = ["ansible"]
   }
 
+  # This part is correct! It ensures the server and file exist first.
   depends_on = [
     local_file.ansible_inventory,
     aws_instance.ansible-controller
   ]
 }
+
 

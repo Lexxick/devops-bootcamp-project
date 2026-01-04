@@ -25,6 +25,7 @@ resource "aws_instance" "ansible-controller" {
  # User data script to install prerequisites
   user_data = <<-EOF
     #!/bin/bash
+    cd /home/ssm-user
     sudo apt update && sudo apt upgrade -y
     sudo apt install pipx
     pipx install --include-deps ansible
