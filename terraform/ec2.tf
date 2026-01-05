@@ -1,56 +1,55 @@
 resource "aws_instance" "web-server" {
-  ami                    = "ami-00d8fc944fb171e29"
+  ami                    = var.ami_id
   instance_type          = "t3.micro"
-  subnet_id              = aws_subnet.devops-public-subnet.id
+  subnet_id              = aws_subnet.devops-public-subnet.id # Public Subnet
   security_groups        = [aws_security_group.devops-public-sg.id]
   private_ip             = "10.0.0.5"
   key_name               = aws_key_pair.ansible.key_name
-  iam_instance_profile   = aws_iam_instance_profile.ec2_profile.name
+  iam_instance_profile   = aws_iam_instance_profile.ec2_profile.name # Enable SSM
+  associate_public_ip_address = true # Required for web traffic ingress
 
-  tags = { Name = "web-server" 
-  Role = "web"
-  }
+  tags = { Name = "web-server", Role = "web" }
+}
+
+# The required Elastic IP resource definition
+resource "aws_eip" "web_server_static_ip" {
+  instance = aws_instance.web-server.id
+  domain   = "vpc"
+  tags = { Name = "web-server-static-eip" }
 }
 
 resource "aws_instance" "ansible-controller" {
-  ami                         = "ami-00d8fc944fb171e29"
+  ami                         = var.ami_id
   instance_type               = "t3.micro"
-  subnet_id                   = aws_subnet.devops-private-subnet.id
+  subnet_id                   = aws_subnet.devops-private-subnet.id # Private Subnet
   security_groups             = [aws_security_group.devops-private-sg.id]
   private_ip                  = "10.0.0.135"
   key_name                    = aws_key_pair.ansible.key_name
   associate_public_ip_address = false
-  iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
-  
- # User data script to install prerequisites
+  iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name # Enable SSM
+
+  # User data script to install prerequisites
   user_data = <<-EOF
     #!/bin/bash
-    sudo apt update && sudo apt upgrade -y
-    sudo apt install pipx
-    pipx install --include-deps ansible
+    apt update && apt upgrade -y
+    apt install python3-pip git -y
+    pip install pipx
     pipx ensurepath
-    sudo apt install git -y
-    # Clone directly into the desired directory
-    git clone https://github.com/Lexxick/devops-bootcamp-project.git /home/ssm-user/devops-bootcamp-project
-
+    export PATH=$PATH:/root/.local/bin # Add pipx binaries to PATH for current session
+    pipx install ansible
   EOF
-
-  tags = { Name = "ansible-controller" 
-  Role = "ansible"
-  }
+  tags = { Name = "ansible-controller", Role = "ansible" }
 }
 
 resource "aws_instance" "monitoring-server" {
-  ami                         = "ami-00d8fc944fb171e29"
+  ami                         = var.ami_id
   instance_type               = "t3.micro"
-  subnet_id                   = aws_subnet.devops-private-subnet.id
+  subnet_id                   = aws_subnet.devops-private-subnet.id # Private Subnet
   security_groups             = [aws_security_group.devops-private-sg.id]
   private_ip                  = "10.0.0.136"
   key_name                    = aws_key_pair.ansible.key_name
   associate_public_ip_address = false
-  iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
+  iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name # Enable SSM
 
-  tags = { Name = "monitoring-server" 
-  Role = "monitoring"
-  }
+  tags = { Name = "monitoring-server", Role = "monitoring" }
 }

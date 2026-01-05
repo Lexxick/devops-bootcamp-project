@@ -5,7 +5,8 @@ resource "tls_private_key" "ssh_key" {
 
 resource "local_file" "private_key_pem" {
   content         = tls_private_key.ssh_key.private_key_pem
-  filename        = "../ansible/ansible-key.pem"
+  # Saves the key in your ansible/ directory relative to where you run terraform
+  filename        = "../ansible/ansible-key.pem" 
   file_permission = "0400"
 }
 
