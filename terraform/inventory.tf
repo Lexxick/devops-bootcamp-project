@@ -14,6 +14,6 @@ resource "local_file" "ansible_inventory" {
     
     ssh_private_key = local_file.private_key_pem.filename
   })
-  filename = "/home/lexxick/devops-bootcamp-project/ansible/inventory.ini"
+  filename = "../ansible/inventory.ini"
 }
 

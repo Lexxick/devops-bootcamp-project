@@ -6,5 +6,5 @@ output "ansible_inventory_file" {
 output "ansible_ssh_key_file" {
   description = "Path to generated private ssh key"
   value       = local_file.private_key_pem.filename
-  sensitive   = true  # Prevents the value from showing up in plain text CLI output
+  sensitive   = false  # Prevents the value from showing up in plain text CLI output
 }

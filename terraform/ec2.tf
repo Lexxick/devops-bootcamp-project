@@ -25,13 +25,13 @@ resource "aws_instance" "ansible-controller" {
  # User data script to install prerequisites
   user_data = <<-EOF
     #!/bin/bash
-    cd /home/ssm-user
     sudo apt update && sudo apt upgrade -y
     sudo apt install pipx
     pipx install --include-deps ansible
     pipx ensurepath
     sudo apt install git -y
-    git clone https://github.com/Lexxick/devops-bootcamp-project.git
+    # Clone directly into the desired directory
+    git clone https://github.com/Lexxick/devops-bootcamp-project.git /home/ssm-user/devops-bootcamp-project
 
   EOF
 
