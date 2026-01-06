@@ -42,7 +42,7 @@ resource "aws_instance" "ansible-controller" {
   associate_public_ip_address = false
   iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
 
-  user_data = base64encode(templatefile("${path.module}/user_data.sh", {
+  user_data_base64 = base64encode(templatefile("${path.module}/user_data.sh", {
     inventory_content = file("${path.module}/../ansible/inventory.ini")
     key_content       = file("${path.module}/../ansible/ansible_key.pem")
   }))
