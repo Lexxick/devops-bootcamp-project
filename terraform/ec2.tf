@@ -43,8 +43,8 @@ resource "aws_instance" "ansible-controller" {
   iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
 
   user_data_base64 = base64encode(templatefile("${path.module}/user_data.sh", {
-      inventory_content = file("${path.module}/../ansible/inventory.ini")
-      key_content       = file("${path.module}/../ansible/ansible_key.pem")
+      inventory_content = file("../ansible/inventory.ini")
+      key_content       = file("../ansible/ansible_key.pem")
       inventory_content = local_file.ansible_inventory.content
       key_content       = tls_private_key.ssh_key.private_key_pem
       inventory_content = local_file.ansible_inventory.content
