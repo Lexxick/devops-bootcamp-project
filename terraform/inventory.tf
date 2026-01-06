@@ -1,9 +1,10 @@
 resource "local_file" "ansible_inventory" {
   content = templatefile("${path.module}/inventory.tftpl", {
-    web_server         = aws_instance.web-server
-    ansible_controller = aws_instance.ansible-controller
-    monitoring_server  = aws_instance.monitoring-server
-    ssh_private_key    = local_file.private_key_pem.filename
+    web_private_ip        = aws_instance.web-server.private_ip
+    monitoring_private_ip = aws_instance.monitoring-server.private_ip
+    ssh_user              = "ubuntu"
+    ssh_private_key       = local_file.private_key_pem.filename
   })
+
   filename = "../ansible/inventory.ini"
 }
