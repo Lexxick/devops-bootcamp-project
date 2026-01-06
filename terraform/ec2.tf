@@ -41,7 +41,7 @@ resource "aws_instance" "ansible-controller" {
   key_name                    = aws_key_pair.ansible.key_name
   associate_public_ip_address = false
   iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
-
+  user_data_replace_on_change = true
   user_data_base64 = base64encode(templatefile("${path.module}/user_data.sh", {
       inventory_content = local_file.ansible_inventory.content
       key_content       = tls_private_key.ssh_key.private_key_pem
