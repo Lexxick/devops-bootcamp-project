@@ -53,9 +53,11 @@ resource "aws_instance" "ansible-controller" {
   }
 
   depends_on = [
+    aws_nat_gateway.devops_ngw,
+    aws_route_table_association.devops-private-route,
     local_file.ansible_inventory,
     tls_private_key.ssh_key
-  ]
+]
 
   tags = {
     Name      = "ansible-controller"
