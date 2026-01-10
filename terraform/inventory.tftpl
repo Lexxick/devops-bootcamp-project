@@ -6,5 +6,5 @@ monitoring-server ansible_host=${monitoring_private_ip}
 
 [all:vars]
 ansible_user=${ssh_user}
-ansible_ssh_private_key_file=${ssh_private_key}
+ansible_ssh_private_key_file=/home/ubuntu/.ansible/ansible_key.pem
 ansible_python_interpreter=/usr/bin/python3
