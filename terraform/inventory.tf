@@ -3,8 +3,7 @@ resource "local_file" "ansible_inventory" {
     web_private_ip        = aws_instance.web-server.private_ip
     monitoring_private_ip = aws_instance.monitoring-server.private_ip
     ssh_user              = "ubuntu"
-    ssh_private_key       = local_file.private_key_pem.filename
   })
 
-  filename = "../ansible/inventory.ini"
+  filename = "${path.module}/inventory.ini"
 }
