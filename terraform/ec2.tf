@@ -43,14 +43,19 @@ resource "aws_instance" "ansible-controller" {
   iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
   user_data_replace_on_change = true
   user_data_base64 = base64encode(templatefile("${path.module}/user_data.sh", {
-      inventory_content = local_file.ansible_inventory.content
-      key_content       = tls_private_key.ssh_key.private_key_pem
+    inventory_content = local_file.ansible_inventory.content
+    key_content       = tls_private_key.ssh_key.private_key_pem
   }))
 
   root_block_device {
     volume_size = 8
     volume_type = "gp3"
   }
+
+  depends_on = [
+    local_file.ansible_inventory,
+    tls_private_key.ssh_key
+  ]
 
   tags = {
     Name      = "ansible-controller"
