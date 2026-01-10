@@ -57,7 +57,7 @@ resource "aws_instance" "ansible-controller" {
     aws_route_table_association.devops-private-route,
     local_file.ansible_inventory,
     tls_private_key.ssh_key
-]
+  ]
 
   tags = {
     Name      = "ansible-controller"
