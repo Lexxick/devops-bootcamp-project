@@ -1,29 +1,21 @@
-resource "aws_iam_role" "ec2_ssm_role" {
-  name        = "ec2-ssm-role"
-  description = "Allow EC2 instances to be managed via AWS Systems Manager (SSM)"
+resource "aws_iam_role" "ssm" {
+  name = "ec2-ssm-role"
 
   assume_role_policy = jsonencode({
-    Version = "2012-10-17",
+    Version = "2012-10-17"
     Statement = [{
-      Effect    = "Allow",
-      Principal = { Service = "ec2.amazonaws.com" },
-      Action    = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = { Service = "ec2.amazonaws.com" }
+      Action = "sts:AssumeRole"
     }]
   })
-
-  tags = {
-    Project   = "devops-bootcamp-final"
-    ManagedBy = "terraform"
-    Env       = "dev"
-  }
 }
 
-resource "aws_iam_role_policy_attachment" "ssm_core" {
-  role       = aws_iam_role.ec2_ssm_role.name
+resource "aws_iam_role_policy_attachment" "ssm" {
+  role       = aws_iam_role.ssm.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
-resource "aws_iam_instance_profile" "ec2_profile" {
-  name = "ec2-ssm-profile"
-  role = aws_iam_role.ec2_ssm_role.name
+resource "aws_iam_instance_profile" "ssm" {
+  role = aws_iam_role.ssm.name
 }
