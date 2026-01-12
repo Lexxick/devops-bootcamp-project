@@ -6,9 +6,15 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 6.27"
     }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~> 4.0"
+    }
   }
 }
+
 
 provider "aws" {
   region = "ap-southeast-1"
 }
+
