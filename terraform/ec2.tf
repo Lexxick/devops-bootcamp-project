@@ -45,8 +45,10 @@ resource "aws_instance" "ansible" {
 
   user_data_replace_on_change = true
   user_data_base64 = base64encode(templatefile("${path.module}/user_data_controller.sh", {
-    private_key = tls_private_key.ansible.private_key_pem
-  }))
+  private_key           = tls_private_key.ansible.private_key_pem
+  web_private_ip        = aws_instance.web.private_ip
+  monitoring_private_ip = aws_instance.monitoring.private_ip
+}))
 
   tags = { Name = "ansible-controller" }
 }
