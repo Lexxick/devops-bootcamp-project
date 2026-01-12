@@ -17,6 +17,12 @@ resource "aws_instance" "web" {
   vpc_security_group_ids = [aws_security_group.public.id]
   iam_instance_profile  = aws_iam_instance_profile.ssm.name
 
+  user_data = templatefile("${path.module}/user_data_node.sh", {
+  public_key = tls_private_key.ansible.public_key_openssh
+  })
+  user_data_replace_on_change = true
+
+
   tags = { Name = "web-server" }
 }
 
@@ -38,6 +44,12 @@ resource "aws_instance" "ansible" {
   vpc_security_group_ids = [aws_security_group.private.id]
   iam_instance_profile  = aws_iam_instance_profile.ssm.name
 
+  user_data = templatefile("${path.module}/user_data_controller.sh", {
+  private_key = tls_private_key.ansible.private_key_pem
+  })
+  user_data_replace_on_change = true
+
+
   tags = { Name = "ansible-controller" }
 }
 
@@ -49,6 +61,12 @@ resource "aws_instance" "monitoring" {
 
   vpc_security_group_ids = [aws_security_group.private.id]
   iam_instance_profile  = aws_iam_instance_profile.ssm.name
+
+  user_data = templatefile("${path.module}/user_data_node.sh", {
+  public_key = tls_private_key.ansible.public_key_openssh
+  })
+  user_data_replace_on_change = true
+
 
   tags = { Name = "monitoring-server" }
 }
