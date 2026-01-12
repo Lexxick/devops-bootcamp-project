@@ -50,6 +50,7 @@ resource "aws_instance" "ansible" {
   monitoring_private_ip = aws_instance.monitoring.private_ip
 }))
 
+
   tags = { Name = "ansible-controller" }
 }
 
