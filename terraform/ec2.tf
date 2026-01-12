@@ -15,13 +15,12 @@ resource "aws_instance" "web" {
   private_ip    = "10.0.0.5"
 
   vpc_security_group_ids = [aws_security_group.public.id]
-  iam_instance_profile  = aws_iam_instance_profile.ssm.name
+  iam_instance_profile   = aws_iam_instance_profile.ssm.name
 
-  user_data = templatefile("${path.module}/user_data_node.sh", {
-  public_key = tls_private_key.ansible.public_key_openssh
-  })
   user_data_replace_on_change = true
-
+  user_data_base64 = base64encode(templatefile("${path.module}/user_data_node.sh", {
+    public_key = tls_private_key.ansible.public_key_openssh
+  }))
 
   tags = { Name = "web-server" }
 }
@@ -42,13 +41,12 @@ resource "aws_instance" "ansible" {
   private_ip    = "10.0.0.135"
 
   vpc_security_group_ids = [aws_security_group.private.id]
-  iam_instance_profile  = aws_iam_instance_profile.ssm.name
+  iam_instance_profile   = aws_iam_instance_profile.ssm.name
 
-  user_data = templatefile("${path.module}/user_data_controller.sh", {
-  private_key = tls_private_key.ansible.private_key_pem
-  })
   user_data_replace_on_change = true
-
+  user_data_base64 = base64encode(templatefile("${path.module}/user_data_controller.sh", {
+    private_key = tls_private_key.ansible.private_key_pem
+  }))
 
   tags = { Name = "ansible-controller" }
 }
@@ -60,13 +58,12 @@ resource "aws_instance" "monitoring" {
   private_ip    = "10.0.0.136"
 
   vpc_security_group_ids = [aws_security_group.private.id]
-  iam_instance_profile  = aws_iam_instance_profile.ssm.name
+  iam_instance_profile   = aws_iam_instance_profile.ssm.name
 
-  user_data = templatefile("${path.module}/user_data_node.sh", {
-  public_key = tls_private_key.ansible.public_key_openssh
-  })
   user_data_replace_on_change = true
-
+  user_data_base64 = base64encode(templatefile("${path.module}/user_data_node.sh", {
+    public_key = tls_private_key.ansible.public_key_openssh
+  }))
 
   tags = { Name = "monitoring-server" }
 }
