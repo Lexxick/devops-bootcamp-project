@@ -10,12 +10,21 @@
       apt:
         update_cache: yes
 
-    - name: Install docker + awscli
+    - name: Install base packages
       apt:
         name:
           - docker.io
-          - awscli
+          - curl
+          - unzip
         state: present
+
+    - name: Install AWS CLI v2
+      shell: |
+        curl -fsSL https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o /tmp/awscliv2.zip
+        unzip -o /tmp/awscliv2.zip -d /tmp
+        /tmp/aws/install || true
+      args:
+        executable: /bin/bash
 
     - name: Enable docker
       systemd:
@@ -39,7 +48,7 @@
       args:
         executable: /bin/bash
 
-    - name: Login to ECR (uses EC2 IAM role)
+    - name: Login to ECR using EC2 IAM role
       shell: |
         aws ecr get-login-password --region {{ aws_region }} \
           | docker login --username AWS --password-stdin {{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com
@@ -51,7 +60,7 @@
       args:
         executable: /bin/bash
 
-    - name: Run app container on port 80 (from ECR)
+    - name: Run app container on port 80
       shell: |
         docker rm -f "{{ app_container }}" >/dev/null 2>&1 || true
         docker run -d --name "{{ app_container }}" \
