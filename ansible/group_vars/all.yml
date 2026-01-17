@@ -1,14 +1,20 @@
-# Web app
+# Web app (source repo still optional now)
 app_repo: "https://github.com/Infratify/lab-final-project"
 app_dir: "/opt/lab-final-project"
-app_image: "lab-final-project:latest"
+
+# ECR deploy (BONUS)
+aws_region: "ap-southeast-1"
+aws_account_id: "516267217090"
+ecr_repo: "devops-bootcamp/final-project-syedazam"
+app_image: "{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com/{{ ecr_repo }}:latest"
+
 app_container: "lab-final-project"
 
 # Monitoring
 monitoring_dir: "/opt/monitoring"
 web_node_exporter_target: "10.0.0.5:9100"
 
-# Grafana login (change later if you want)
+# Grafana login
 grafana_admin_user: "admin"
 grafana_admin_password: "admin123"
 

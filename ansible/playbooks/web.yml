@@ -1,5 +1,5 @@
 ---
-- name: Web server - Docker + App + Node Exporter
+- name: Web server - Docker + Node Exporter + App from ECR
   hosts: web
   become: true
   vars_files:
@@ -10,11 +10,11 @@
       apt:
         update_cache: yes
 
-    - name: Install docker + git
+    - name: Install docker + awscli
       apt:
         name:
           - docker.io
-          - git
+          - awscli
         state: present
 
     - name: Enable docker
@@ -39,26 +39,24 @@
       args:
         executable: /bin/bash
 
-    - name: Clone app repo
-      git:
-        repo: "{{ app_repo }}"
-        dest: "{{ app_dir }}"
-        version: "main"
-        force: yes
-
-    - name: Build app image
+    - name: Login to ECR (uses EC2 IAM role)
       shell: |
-        cd "{{ app_dir }}"
-        docker build -t "{{ app_image }}" .
+        aws ecr get-login-password --region {{ aws_region }} \
+          | docker login --username AWS --password-stdin {{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com
       args:
         executable: /bin/bash
 
-    - name: Run app container on port 80
+    - name: Pull app image from ECR
+      shell: docker pull {{ app_image }}
+      args:
+        executable: /bin/bash
+
+    - name: Run app container on port 80 (from ECR)
       shell: |
         docker rm -f "{{ app_container }}" >/dev/null 2>&1 || true
         docker run -d --name "{{ app_container }}" \
           --restart unless-stopped \
-          -p 80:80 \
+          -p 80:3000 \
           "{{ app_image }}"
       args:
         executable: /bin/bash
