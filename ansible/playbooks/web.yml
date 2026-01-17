@@ -66,6 +66,6 @@
         docker run -d --name "{{ app_container }}" \
           --restart unless-stopped \
           -p 80:80 \
-          "{{ ecr_image }}"
+          "{{ app_image }}"
       args:
         executable: /bin/bash
