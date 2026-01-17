@@ -44,16 +44,17 @@ for i in $(seq 1 5); do
   sleep 10
 done
 
-# Write Ansible key + inventory + config
+# Create Ansible directory
 install -d -m 700 -o ubuntu -g ubuntu /home/ubuntu/.ansible
 
+# Write private SSH key
 cat >/home/ubuntu/.ansible/ansible_key.pem <<'KEY_EOF'
 ${private_key}
 KEY_EOF
 chown ubuntu:ubuntu /home/ubuntu/.ansible/ansible_key.pem
 chmod 600 /home/ubuntu/.ansible/ansible_key.pem
 
-# Hardcode your static private IPs (simple + beginner friendly)
+# Inventory (simple, static, beginner-friendly)
 cat >/home/ubuntu/.ansible/inventory.ini <<'INV_EOF'
 [web]
 web-server ansible_host=10.0.0.5
@@ -69,7 +70,7 @@ INV_EOF
 chown ubuntu:ubuntu /home/ubuntu/.ansible/inventory.ini
 chmod 644 /home/ubuntu/.ansible/inventory.ini
 
-# Disable host key prompt (so no "Are you sure you want to continue connecting")
+# Ansible config (no SSH prompts, clean output)
 cat >/home/ubuntu/.ansible/ansible.cfg <<'CFG_EOF'
 [defaults]
 inventory = /home/ubuntu/.ansible/inventory.ini
@@ -82,5 +83,11 @@ pipelining = True
 CFG_EOF
 chown ubuntu:ubuntu /home/ubuntu/.ansible/ansible.cfg
 chmod 644 /home/ubuntu/.ansible/ansible.cfg
+
+# ⭐ IMPORTANT FIX ⭐
+# Make Ansible always load config no matter where you run it from
+cp /home/ubuntu/.ansible/ansible.cfg /home/ubuntu/.ansible.cfg
+chown ubuntu:ubuntu /home/ubuntu/.ansible.cfg
+chmod 644 /home/ubuntu/.ansible.cfg
 
 echo "controller ready"
