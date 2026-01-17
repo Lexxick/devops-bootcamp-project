@@ -1,0 +1,13 @@
+# Web app
+app_repo: "https://github.com/Infratify/lab-final-project"
+app_dir: "/opt/lab-final-project"
+app_image: "lab-final-project:latest"
+app_container: "lab-final-project"
+
+# Monitoring
+monitoring_dir: "/opt/monitoring"
+web_node_exporter_target: "10.0.0.5:9100"
+
+# Grafana login (change later if you want)
+grafana_admin_user: "admin"
+grafana_admin_password: "admin123"

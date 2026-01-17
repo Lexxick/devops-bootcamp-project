@@ -1,0 +1,49 @@
+---
+- name: Monitoring server - Docker + Prometheus + Grafana
+  hosts: monitoring
+  become: true
+  vars_files:
+    - ../group_vars/all.yml
+
+  tasks:
+    - name: apt update
+      apt:
+        update_cache: yes
+
+    - name: Install docker + compose plugin
+      apt:
+        name:
+          - docker.io
+          - docker-compose-plugin
+        state: present
+
+    - name: Enable docker
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+
+    - name: Create monitoring folder
+      file:
+        path: "{{ monitoring_dir }}"
+        state: directory
+        mode: "0755"
+
+    - name: Write Prometheus config
+      template:
+        src: ../templates/prometheus.yml.j2
+        dest: "{{ monitoring_dir }}/prometheus.yml"
+        mode: "0644"
+
+    - name: Write Docker Compose file
+      template:
+        src: ../templates/docker-compose.yml.j2
+        dest: "{{ monitoring_dir }}/docker-compose.yml"
+        mode: "0644"
+
+    - name: Start prometheus + grafana
+      shell: |
+        cd "{{ monitoring_dir }}"
+        docker compose up -d
+      args:
+        executable: /bin/bash
