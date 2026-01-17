@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DevOps Bootcamp Final Project</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f5f7fa;
+      color: #222;
+    }
+    h1, h2 {
+      color: #2c3e50;
+    }
+    a {
+      color: #1e88e5;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .box {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>DevOps Bootcamp – Final Project</h1>
+  <p><strong>Project:</strong> Trust Me, I’m a DevOps Engineer</p>
+
+  <div class="box">
+    <h2>Project Links</h2>
+    <ul>
+      <li><strong>GitHub Repository:</strong>
+        <a href="https://github.com/Lexxick/devops-bootcamp-project" target="_blank">
+          https://github.com/Lexxick/devops-bootcamp-project
+        </a>
+      </li>
+      <li><strong>Web Application:</strong>
+        <a href="http://web.syedazam.my" target="_blank">
+          http://web.syedazam.my
+        </a>
+      </li>
+      <li><strong>Monitoring (Grafana):</strong>
+        <a href="https://monitoring.syedazam.my" target="_blank">
+          https://monitoring.syedazam.my
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <h2>Architecture Overview</h2>
+    <ul>
+      <li>AWS infrastructure provisioned using Terraform</li>
+      <li>Ansible for configuration management</li>
+      <li>Dockerized web application</li>
+      <li>Prometheus & Grafana monitoring</li>
+      <li>Secure access via Cloudflare Tunnel</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <h2>Monitoring</h2>
+    <p>
+      Prometheus collects metrics from the web server (CPU, RAM, Disk).
+      Grafana visualizes these metrics and is exposed securely using Cloudflare Tunnel.
+    </p>
+  </div>
+
+  <div class="box">
+    <h2>CI/CD</h2>
+    <p>
+      GitHub Actions is used to automatically deploy this documentation
+      to GitHub Pages whenever changes are pushed to the main branch.
+    </p>
+  </div>
+
+</body>
+</html>
