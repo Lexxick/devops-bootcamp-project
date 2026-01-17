@@ -4,6 +4,7 @@
   become: true
   vars_files:
     - ../group_vars/all.yml
+    - ../group_vars/cloudflare_token.yml
 
   tasks:
     - name: apt update
@@ -45,3 +46,20 @@
       command: docker compose up -d
       args:
         chdir: "{{ monitoring_dir }}"
+   
+    - name: Remove old cloudflared containers (clean slate)
+      shell: |
+        docker rm -f cloudflared >/dev/null 2>&1 || true
+      args:
+        executable: /bin/bash
+
+    - name: Run Cloudflare Tunnel (cloudflared) for Grafana
+      shell: |
+        docker run -d \
+          --name cloudflared \
+          --restart unless-stopped \
+          --network host \
+          cloudflare/cloudflared:latest \
+          tunnel --no-autoupdate run --token {{ cloudflared_tunnel_token }}
+      args:
+        executable: /bin/bash

@@ -28,3 +28,6 @@ ansible/**/*.pem
 .DS_Store
 .vscode/
 .idea/
+
+# Cloudflare tunnel secret
+ansible/group_vars/cloudflare_token.yml

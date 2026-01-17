@@ -11,3 +11,10 @@ web_node_exporter_target: "10.0.0.5:9100"
 # Grafana login (change later if you want)
 grafana_admin_user: "admin"
 grafana_admin_password: "admin123"
+
+# Cloudflare Tunnel (Monitoring)
+cloudflared_hostname: "monitoring.syedazam.my"
+cloudflared_origin_url: "http://127.0.0.1:3000"
+
+# DO NOT COMMIT your real token here.
+# Put it in ansible/group_vars/cloudflare_token.yml (ignored by git) OR pass via --extra-vars.
