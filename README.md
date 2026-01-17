@@ -62,14 +62,35 @@ All Ansible tasks are executed from the **Ansible Controller**.
 ### Run Ansible
 ```bash
 aws ssm start-session --target <ANSIBLE_CONTROLLER_INSTANCE_ID>
+```
+```bash
 sudo -iu ubuntu
+```
 git clone https://github.com/Lexxick/devops-bootcamp-project.git
+```bash
 cd devops-bootcamp-project/ansible
+```
+```bash
 ansible-playbook playbooks/site.yml
+```
+
+---
+
+## ⚙️ My Other Stuff
 
 ### Docker Image to ECR
-- git clone https://github.com/Infratify/lab-final-project 
-- aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin <ECR-id>.dkr.ecr.ap-southeast-1.amazonaws.com/<ECR-Container-Name> *Get in AWS Console view push commands*
-- docker build -t devops-bootcamp-project-syedazam .
-- docker tag <ECR-Container-Name>:latest <ECR-id>.dkr.ecr.ap-southeast-1.amazonaws.com/<ECR-Container-Name> *Get in AWS Console view push commands*
+```bash
+git clone https://github.com/Infratify/lab-final-project 
+```
+```bash
+aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin <ECR-id>.dkr.ecr.ap-southeast-1.amazonaws.com/<ECR-Container-Name> *Get in AWS Console view push commands*
+```
+```bash
+docker build -t devops-bootcamp-project-syedazam .
+```
+```bash
+docker tag <ECR-Container-Name>:latest <ECR-id>.dkr.ecr.ap-southeast-1.amazonaws.com/<ECR-Container-Name> *Get in AWS Console view push commands*
+```
+```bash
 - docker push <ECR-id>.dkr.ecr.ap-southeast-1.amazonaws.com/<ECR-Container-Name> *Get in AWS Console view push commands*
+```
