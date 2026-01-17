@@ -10,11 +10,11 @@
       apt:
         update_cache: yes
 
-    - name: Install docker + compose plugin
+    - name: Install docker + docker compose v2
       apt:
         name:
           - docker.io
-          - docker-compose-plugin
+          - docker-compose-v2
         state: present
 
     - name: Enable docker
@@ -42,8 +42,6 @@
         mode: "0644"
 
     - name: Start prometheus + grafana
-      shell: |
-        cd "{{ monitoring_dir }}"
-        docker compose up -d
+      command: docker compose up -d
       args:
-        executable: /bin/bash
+        chdir: "{{ monitoring_dir }}"
