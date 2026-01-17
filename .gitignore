@@ -29,5 +29,12 @@ ansible/**/*.pem
 .vscode/
 .idea/
 
+##################################
 # Cloudflare tunnel secret
+##################################
 ansible/group_vars/cloudflare_token.yml
+
+##################################
+#MyStuff
+##################################
+docker-Image-to-ECR-stuff.md
