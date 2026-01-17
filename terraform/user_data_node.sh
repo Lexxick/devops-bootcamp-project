@@ -13,7 +13,7 @@ EOF
 # Wait for basic outbound connectivity (NAT can take a bit)
 echo "Waiting for outbound network..."
 for i in $(seq 1 60); do
-  if curl -4 -m 3 -fsS http://1.1.1.1 >/dev/null 2>&1; then
+  if timeout 3 bash -c 'cat < /dev/null > /dev/tcp/1.1.1.1/80' 2>/dev/null; then
     echo "Outbound network is up."
     break
   fi
@@ -33,7 +33,7 @@ for i in $(seq 1 10); do
   sleep 10
 done
 
-# Install Docker (simple, official Ubuntu repo)
+# Install docker + some basics
 echo "Installing docker..."
 for i in $(seq 1 5); do
   if apt-get install -y docker.io; then
@@ -45,22 +45,16 @@ for i in $(seq 1 5); do
 done
 
 systemctl enable --now docker
-
-# Allow ubuntu user to run docker without sudo (effective after re-login)
 usermod -aG docker ubuntu || true
 
 # Add the controller's SSH public key to ubuntu authorized_keys
 install -d -m 700 -o ubuntu -g ubuntu /home/ubuntu/.ssh
-touch /home/ubuntu/.ssh/authorized_keys
-chown ubuntu:ubuntu /home/ubuntu/.ssh/authorized_keys
-chmod 600 /home/ubuntu/.ssh/authorized_keys
 
-# Terraform will substitute this line with the public key string
-echo '${public_key}' >> /home/ubuntu/.ssh/authorized_keys
+# Write (overwrite) authorized_keys to keep it clean on rebuilds
+cat >/home/ubuntu/.ssh/authorized_keys <<'EOF'
+${public_key}
+EOF
 
-# De-duplicate authorized_keys (keep it clean if user-data reruns)
-awk '!seen[$0]++' /home/ubuntu/.ssh/authorized_keys > /home/ubuntu/.ssh/authorized_keys.tmp
-mv /home/ubuntu/.ssh/authorized_keys.tmp /home/ubuntu/.ssh/authorized_keys
 chown ubuntu:ubuntu /home/ubuntu/.ssh/authorized_keys
 chmod 600 /home/ubuntu/.ssh/authorized_keys
 

@@ -10,10 +10,10 @@ cat >/etc/apt/apt.conf.d/99force-ipv4 <<'EOF'
 Acquire::ForceIPv4 "true";
 EOF
 
-# Wait for outbound network
+# Wait for outbound network (no curl needed)
 echo "Waiting for outbound network..."
 for i in $(seq 1 60); do
-  if curl -4 -m 3 -fsS http://1.1.1.1 >/dev/null 2>&1; then
+  if timeout 3 bash -c 'cat < /dev/null > /dev/tcp/1.1.1.1/80' 2>/dev/null; then
     echo "Outbound network is up."
     break
   fi
@@ -53,12 +53,13 @@ KEY_EOF
 chown ubuntu:ubuntu /home/ubuntu/.ansible/ansible_key.pem
 chmod 600 /home/ubuntu/.ansible/ansible_key.pem
 
+# Hardcode your static private IPs (simple + beginner friendly)
 cat >/home/ubuntu/.ansible/inventory.ini <<'INV_EOF'
 [web]
-web-server ansible_host=${web_private_ip}
+web-server ansible_host=10.0.0.5
 
 [monitoring]
-monitoring-server ansible_host=${monitoring_private_ip}
+monitoring-server ansible_host=10.0.0.136
 
 [all:vars]
 ansible_user=ubuntu
@@ -68,14 +69,13 @@ INV_EOF
 chown ubuntu:ubuntu /home/ubuntu/.ansible/inventory.ini
 chmod 644 /home/ubuntu/.ansible/inventory.ini
 
-# Disable host key prompt (beginner-friendly)
+# Disable host key prompt (so no "Are you sure you want to continue connecting")
 cat >/home/ubuntu/.ansible/ansible.cfg <<'CFG_EOF'
 [defaults]
 inventory = /home/ubuntu/.ansible/inventory.ini
 host_key_checking = False
 retry_files_enabled = False
 interpreter_python = auto_silent
-stdout_callback = yaml
 
 [ssh_connection]
 pipelining = True
@@ -84,4 +84,3 @@ chown ubuntu:ubuntu /home/ubuntu/.ansible/ansible.cfg
 chmod 644 /home/ubuntu/.ansible/ansible.cfg
 
 echo "controller ready"
-
