@@ -151,6 +151,23 @@ ansible-playbook playbooks/site.yml
 ### Zero Trust (Tunnel)
 - monitoring-tunnel
 
+---
+
+## 	Prometheus Dashboard
+
+### Explain MORE!!!
+
+
+---
+
+## 	Change DevOps Engineer > Syed Azam
+
+### Local
+- cd lab-final-project
+- docker-compose.yml > USER_NAME=${USER_NAME:-DevOps Engineer} > USER_NAME=${USER_NAME:-Syed Azam}
+
+###	Docker Build Update Name
+-  Explain MORE!!
 
 ---
 
