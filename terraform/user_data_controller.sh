@@ -1,5 +1,5 @@
 #!/bin/bash
-# user_data_controller.sh
+# user_data_controller.sh (simple + reliable)
 set -euxo pipefail
 exec > >(tee /var/log/user-data.log | logger -t user-data -s 2>/dev/console) 2>&1
 
@@ -10,7 +10,7 @@ cat >/etc/apt/apt.conf.d/99force-ipv4 <<'EOF'
 Acquire::ForceIPv4 "true";
 EOF
 
-# Wait for outbound network (no curl needed)
+# Wait for outbound network
 echo "Waiting for outbound network..."
 for i in $(seq 1 60); do
   if timeout 3 bash -c 'cat < /dev/null > /dev/tcp/1.1.1.1/80' 2>/dev/null; then
@@ -33,10 +33,10 @@ for i in $(seq 1 10); do
   sleep 10
 done
 
-# Install Ansible + helpers
+# Install Ansible
 echo "Installing packages..."
 for i in $(seq 1 5); do
-  if apt-get install -y git python3-pip ansible; then
+  if apt-get install -y git python3-pip ansible openssh-client; then
     echo "Package install succeeded."
     break
   fi
@@ -44,18 +44,19 @@ for i in $(seq 1 5); do
   sleep 10
 done
 
-# Create Ansible directory
-install -d -m 700 -o ubuntu -g ubuntu /home/ubuntu/.ansible
+# Write SSH key for ubuntu user (so ansible can SSH to nodes)
+install -d -m 700 -o ubuntu -g ubuntu /home/ubuntu/.ssh
 
-# Write private SSH key
-cat >/home/ubuntu/.ansible/ansible_key.pem <<'KEY_EOF'
+cat >/home/ubuntu/.ssh/ansible_key.pem <<'KEY_EOF'
 ${private_key}
 KEY_EOF
-chown ubuntu:ubuntu /home/ubuntu/.ansible/ansible_key.pem
-chmod 600 /home/ubuntu/.ansible/ansible_key.pem
+chown ubuntu:ubuntu /home/ubuntu/.ssh/ansible_key.pem
+chmod 600 /home/ubuntu/.ssh/ansible_key.pem
 
-# Inventory (simple, static, beginner-friendly)
-cat >/home/ubuntu/.ansible/inventory.ini <<'INV_EOF'
+# Global ansible config + inventory (so "ansible all -m ping" works anywhere)
+install -d -m 755 /etc/ansible
+
+cat >/etc/ansible/hosts <<'INV_EOF'
 [web]
 web-server ansible_host=10.0.0.5
 
@@ -64,30 +65,22 @@ monitoring-server ansible_host=10.0.0.136
 
 [all:vars]
 ansible_user=ubuntu
-ansible_ssh_private_key_file=/home/ubuntu/.ansible/ansible_key.pem
+ansible_ssh_private_key_file=/home/ubuntu/.ssh/ansible_key.pem
 ansible_python_interpreter=/usr/bin/python3
 INV_EOF
-chown ubuntu:ubuntu /home/ubuntu/.ansible/inventory.ini
-chmod 644 /home/ubuntu/.ansible/inventory.ini
+chmod 644 /etc/ansible/hosts
 
-# Ansible config (no SSH prompts, clean output)
-cat >/home/ubuntu/.ansible/ansible.cfg <<'CFG_EOF'
+cat >/etc/ansible/ansible.cfg <<'CFG_EOF'
 [defaults]
-inventory = /home/ubuntu/.ansible/inventory.ini
+inventory = /etc/ansible/hosts
 host_key_checking = False
 retry_files_enabled = False
 interpreter_python = auto_silent
+timeout = 30
 
 [ssh_connection]
 pipelining = True
 CFG_EOF
-chown ubuntu:ubuntu /home/ubuntu/.ansible/ansible.cfg
-chmod 644 /home/ubuntu/.ansible/ansible.cfg
-
-# ⭐ IMPORTANT FIX ⭐
-# Make Ansible always load config no matter where you run it from
-cp /home/ubuntu/.ansible/ansible.cfg /home/ubuntu/.ansible.cfg
-chown ubuntu:ubuntu /home/ubuntu/.ansible.cfg
-chmod 644 /home/ubuntu/.ansible.cfg
+chmod 644 /etc/ansible/ansible.cfg
 
 echo "controller ready"
