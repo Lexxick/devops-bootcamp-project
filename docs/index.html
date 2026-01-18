@@ -11,7 +11,7 @@
             --neon-pink: #ff00ff;
             --terminal-green: #00ff41;
             --dark-bg: #050505;
-            --panel-bg: rgba(10, 10, 10, 0.85);
+            --overlay: rgba(10, 10, 10, 0.85);
         }
 
         body {
@@ -19,269 +19,236 @@
             color: #e0e0e0;
             font-family: 'Share Tech Mono', monospace;
             margin: 0;
+            padding: 0;
             overflow-x: hidden;
         }
 
-        /* Futuristic Moving Grid Background */
-        #grid-bg {
+        /* Bustling Futuristic City Background Animation */
+        .city-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200%; /* Double width for seamless scroll */
+            height: 100%;
+            background-image: url('https://i.imgur.com'); /* Futuristic metropolis wallpaper */
+            background-size: cover;
+            background-repeat: repeat-x;
+            z-index: -2;
+            opacity: 0.6;
+            animation: cityScroll 80s linear infinite;
+        }
+
+        @keyframes cityScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Digital HUD Overlay */
+        .hud-scanline {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
-            background: linear-gradient(transparent 0%, rgba(0, 242, 255, 0.05) 50%, transparent 100%),
-                        linear-gradient(90deg, transparent 0%, rgba(0, 242, 255, 0.05) 50%, transparent 100%);
-            background-size: 50px 50px;
-            animation: gridMove 20s linear infinite;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+            z-index: 10;
         }
 
-        @keyframes gridMove {
-            from { background-position: 0 0; }
-            to { background-position: 0 1000px; }
-        }
-
-        /* Cyberpunk Container */
         .container {
-            max-width: 1100px;
-            margin: 50px auto;
+            max-width: 1000px;
+            margin: 60px auto;
             padding: 40px;
-            background: var(--panel-bg);
-            border: 2px solid var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2), inset 0 0 20px rgba(0, 242, 255, 0.1);
+            background: var(--overlay);
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2), inset 0 0 30px rgba(0, 0, 0, 0.8);
             position: relative;
-            clip-path: polygon(0 20px, 20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+            backdrop-filter: blur(10px);
         }
 
-        /* Header Styling */
-        header {
-            border-bottom: 2px solid var(--neon-pink);
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            text-align: center;
-        }
-
+        /* Retains original document flow */
         h1 {
             font-family: 'Orbitron', sans-serif;
             color: var(--neon-blue);
             text-transform: uppercase;
-            letter-spacing: 5px;
-            margin: 0;
+            text-align: center;
+            letter-spacing: 4px;
+            margin-bottom: 5px;
             text-shadow: 0 0 10px var(--neon-blue);
         }
 
-        .subtitle {
-            color: var(--neon-pink);
-            font-style: italic;
-            margin-top: 10px;
-        }
+        strong { color: var(--neon-pink); }
 
-        /* Sections and Content */
         h2 {
             font-family: 'Orbitron', sans-serif;
-            color: var(--neon-blue);
-            border-left: 5px solid var(--neon-pink);
-            padding-left: 15px;
+            border-bottom: 2px solid var(--neon-blue);
+            padding-bottom: 10px;
             margin-top: 50px;
-            text-transform: uppercase;
-            font-size: 1.2rem;
+            color: var(--neon-blue);
+            font-size: 1.4rem;
         }
 
         h3 {
             color: var(--terminal-green);
+            text-transform: uppercase;
             margin-top: 30px;
         }
 
-        .link-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        .link-card {
-            padding: 15px;
-            border: 1px solid rgba(0, 242, 255, 0.3);
-            background: rgba(0, 242, 255, 0.05);
-            transition: 0.3s;
-        }
-
-        .link-card:hover {
-            border-color: var(--neon-pink);
-            background: rgba(255, 0, 255, 0.05);
-            transform: translateY(-5px);
-        }
-
-        a {
-            color: var(--neon-blue);
-            text-decoration: none;
-            word-break: break-all;
-        }
-
-        a:hover { color: var(--neon-pink); }
-
-        /* Tech Command Styling */
         pre {
             background: #000;
             color: var(--terminal-green);
             padding: 20px;
             border: 1px solid #333;
-            border-radius: 4px;
+            border-left: 4px solid var(--neon-blue);
             overflow-x: auto;
-            position: relative;
-        }
-
-        pre::before {
-            content: "SYSTEM EXECUTE >";
-            display: block;
-            font-size: 0.7rem;
-            color: #666;
-            margin-bottom: 10px;
+            font-size: 0.9rem;
         }
 
         code {
             color: var(--neon-pink);
             background: rgba(255, 0, 255, 0.1);
-            padding: 2px 5px;
-            border-radius: 3px;
+            padding: 2px 4px;
         }
 
-        /* Tables for Infrastructure */
+        a {
+            color: var(--neon-blue);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--neon-blue);
+        }
+
+        a:hover {
+            color: var(--neon-pink);
+            border-bottom: 1px solid var(--neon-pink);
+            text-shadow: 0 0 8px var(--neon-pink);
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
         }
 
         th, td {
-            border: 1px solid rgba(0, 242, 255, 0.2);
-            padding: 15px;
+            border: 1px solid #333;
+            padding: 12px;
             text-align: left;
         }
 
-        th {
-            color: var(--neon-blue);
-            background: rgba(0, 242, 255, 0.1);
-            text-transform: uppercase;
+        th { color: var(--neon-blue); text-transform: uppercase; }
+
+        blockquote {
+            border-left: 3px solid var(--neon-pink);
+            margin: 10px 0;
+            padding-left: 15px;
+            color: #aaa;
         }
 
-        /* Footer Glitch */
-        .footer {
-            text-align: center;
-            margin-top: 60px;
-            padding-top: 20px;
-            border-top: 1px solid #333;
+        /* Decorative Corners */
+        .corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--neon-blue);
         }
+        .top-left { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+        .bottom-right { bottom: -2px; right: -2px; border-left: none; border-top: none; }
 
-        .footer span {
-            color: var(--neon-pink);
-            font-weight: bold;
-        }
-
-        /* Decorative Glitch Overlay */
-        .scanline {
-            width: 100%;
-            height: 100px;
-            z-index: 10;
-            background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(0, 0, 0, 0) 100%);
-            opacity: 0.1;
-            position: fixed;
-            bottom: 100%;
-            animation: scanline 8s linear infinite;
-        }
-
-        @keyframes scanline {
-            0% { bottom: 100%; }
-            100% { bottom: -100px; }
-        }
     </style>
 </head>
 <body>
 
-    <div id="grid-bg"></div>
-    <div class="scanline"></div>
+    <div class="city-bg"></div>
+    <div class="hud-scanline"></div>
 
     <div class="container">
-        <header>
-            <h1>DevOps Bootcamp Project</h1>
-            <div class="subtitle">PROJECT_STATUS: COMPLETED // ENGINEER: SYED AZAM</div>
-        </header>
+        <div class="corner top-left"></div>
+        <div class="corner bottom-right"></div>
 
-        <!-- PORTALS -->
-        <h2>01_EXTERNAL_PORTALS</h2>
-        <div class="link-grid">
-            <div class="link-card">
-                <strong>GITHUB REPO</strong><br>
-                <a href="https://github.com">/devops-bootcamp-project</a>
-            </div>
-            <div class="link-card">
-                <strong>WEB APP</strong><br>
-                <a href="http://web.syedazam.my">web.syedazam.my</a>
-            </div>
-            <div class="link-card">
-                <strong>MONITORING</strong><br>
-                <a href="https://monitoring.syedazam.my">monitoring.syedazam.my</a>
-            </div>
-            <div class="link-card">
-                <strong>DOCS</strong><br>
-                <a href="https://lexxick.github.io">gh-pages/documentation</a>
-            </div>
-        </div>
+        <h1>DevOps Bootcamp Final Project</h1>
+        <p style="text-align: center;"><strong>Project Name:</strong> Trust Me, I’m a DevOps Engineer</p>
 
-        <!-- LOCAL SETUP -->
-        <h2>02_SYSTEM_ARCHITECTURE</h2>
-        <h3>Git Versioning</h3>
+        <hr style="border: 0; height: 1px; background: var(--neon-blue); margin: 30px 0;">
+
+        <h2>🔗 Project Links</h2>
         <ul>
-            <li><code>.gitignore</code></li>
-            <li><code>.github/workflows</code> [pages.yml, ecr-build-push.yml]</li>
+            <li><strong>GitHub Repository:</strong> <a href="https://github.com">https://github.com</a></li>
+            <li><strong>Web Application:</strong> <a href="http://web.syedazam.my">http://web.syedazam.my</a></li>
+            <li><strong>Monitoring (Grafana via Cloudflare Tunnel):</strong> <a href="https://monitoring.syedazam.my">https://monitoring.syedazam.my</a></li>
+            <li><strong>Documentation (GitHub Pages):</strong> <a href="https://lexxick.github.io">https://lexxick.github.io</a></li>
         </ul>
 
-        <h3>Terraform Provisioning (Infrastructure as Code)</h3>
-        <p>Resource Map: <code>providers.tf</code>, <code>iam.tf</code>, <code>backend.tf</code>, <code>ec2.tf</code>, <code>ecr.tf</code>, <code>vpc.tf</code>, <code>security.tf</code>, <code>variables.tf</code>, <code>bootstrap.tf</code>, <code>outputs.tf</code></p>
-        <p><strong>Initialization Scripts:</strong></p>
+        <h2>Local Setup</h2>
+        <h3>Git</h3>
         <ul>
-            <li><code>user_data_controller.sh</code> (Installs dependencies & SSH keys)</li>
-            <li><code>user_data_node.sh</code> (Worker node configuration)</li>
+            <li>.gitignore</li>
+            <li>.github/workflows
+                <blockquote>pages.yml<br>ecr-build-push.yml</blockquote>
+            </li>
         </ul>
 
-        <h3>Ansible Orchestration</h3>
-        <p><strong>Playbooks:</strong> site.yml, web.yml, monitoring.yml</p>
-        <p><strong>Templates:</strong> docker-compose.yml.j2, prometheus.yml.j2</p>
+        <h3>Terraform Structure</h3>
+        <p>providers.tf, iam.tf, backend.tf, ec2.tf, ecr.tf, vpc.tf, security.tf, variables.tf, bootstrap.tf, outputs.tf</p>
+        <ul>
+            <li><code>user_data_controller.sh</code> *Install all prerequisites and write SSH Key*</li>
+            <li><code>user_data_node.sh</code> *Install all prerequisites and write SSH Key*</li>
+        </ul>
 
-        <!-- DOCKER -->
-        <h2>03_IMAGE_TRANSMUTATION</h2>
+        <h3>Ansible Structure</h3>
+        <ul>
+            <li>playbooks
+                <blockquote>site.yml, web.yml, monitoring.yml</blockquote>
+            </li>
+            <li>group_vars
+                <blockquote>all.yml, cloudflare_token.yml *manually added into ec2 to avoid git hub*</blockquote>
+            </li>
+            <li>templates
+                <blockquote>docker-compose.yml.j2, prometheus.yml.j2</blockquote>
+            </li>
+        </ul>
+
+        <h3>Docker Image to ECR</h3>
         <pre>
 git clone https://github.com 
 mv lab-final-project docker
 cd docker
-aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin &lt;ECR-id&gt;://;
+aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin &lt;ECR-id&gt;://; #Get in AWS Console view push commands
 docker build -t devops-bootcamp-project-syedazam .
-docker tag &lt;ECR-Container-Name&gt;:latest &lt;ECR-id&gt;://;
-docker push &lt;ECR-id&gt;://;
-        </pre>
+docker tag &lt;ECR-Container-Name&gt;:latest &lt;ECR-id&gt;://; #Get in AWS Console view push commands
+docker push &lt;ECR-id&gt;://; #Get in AWS Console view push commands</pre>
 
-        <!-- INFRASTRUCTURE TABLE -->
-        <h2>04_INSTANCE_LOGISTICS</h2>
-        <p>Provisioned in <strong>AWS AP-SOUTHEAST-1</strong></p>
+        <h2>🏗 Infrastructure (Terraform)</h2>
+        <p>All infrastructure is provisioned using <strong>Terraform</strong> in <code>ap-southeast-1</code>.</p>
+        
+        <h3>Network</h3>
+        <ul>
+            <li>VPC: 10.0.0.0/24</li>
+            <li>Public Subnet: 10.0.0.0/25</li>
+            <li>Private Subnet: 10.0.0.128/25</li>
+            <li>Internet Gateway + NAT Gateway</li>
+        </ul>
+
+        <h3>EC2 Instances</h3>
         <table>
             <thead>
                 <tr>
                     <th>Role</th>
                     <th>Private IP</th>
-                    <th>Access Method</th>
+                    <th>Access</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>Web Server</td>
                     <td>10.0.0.5</td>
-                    <td>Public (Elastic IP)</td>
+                    <td>Public (EIP)</td>
                 </tr>
                 <tr>
                     <td>Ansible Controller</td>
                     <td>10.0.0.135</td>
-                    <td>Private (AWS SSM Only)</td>
+                    <td>Private (SSM only)</td>
                 </tr>
                 <tr>
                     <td>Monitoring Server</td>
@@ -290,48 +257,103 @@ docker push &lt;ECR-id&gt;://;
                 </tr>
             </tbody>
         </table>
-        <p><em>Note: Terraform state secured via S3 Backend. Network: VPC 10.0.0.0/24 (Public/Private Subnets).</em></p>
 
-        <!-- ANSIBLE RUN -->
-        <h2>05_DEPLOYMENT_COMMANDS</h2>
-        <pre>
-aws ssm start-session --target &lt;ANSIBLE_CONTROLLER_ID&gt;
-sudo -iu ubuntu
-git clone https://github.com.git
-cd devops-bootcamp-project/ansible/group_vars
-nano cloudflare_token.yml 
-# Set: cloudflared_tunnel_token: "TOKEN_VALUE"
-cd ../playbooks
-ansible-playbook site.yml
-        </pre>
-
-        <!-- CLOUDFLARE -->
-        <h2>06_SECURE_GATEWAYS</h2>
+        <h3>Notes</h3>
         <ul>
-            <li><strong>DNS Management:</strong> Type A (Web) and CNAME (Monitoring Tunnel)</li>
-            <li><strong>Security:</strong> Flexible SSL/TLS Encryption</li>
-            <li><strong>Zero Trust:</strong> monitoring-tunnel</li>
+            <li>Terraform state stored in <strong>S3</strong></li>
+            <li><code>user_data_controller.sh</code> installs Ansible and prepares inventory</li>
+            <li><code>user_data_node.sh</code> installs Docker and Node Exporter</li>
+            <li>All servers are accessed via <strong>AWS SSM</strong></li>
         </ul>
 
-        <!-- CI/CD -->
-        <h2>07_AUTOMATED_WORKFLOWS</h2>
-        <p>Permissions: <code>AmazonEC2ContainerRegistryFullAccess</code>, <code>AmazonSSMFullAccess</code></p>
-        <p><strong>GitHub Secrets:</strong> AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_ACCOUNT_ID, ANSIBLE_CONTROLLER_ID</p>
+        <h2>⚙️ Configuration Management (Ansible)</h2>
+        <p>All Ansible tasks are executed from the <strong>Ansible Controller</strong>.</p>
+        
+        <h3>Web Server</h3>
+        <ul>
+            <li>Docker installed</li>
+            <li>Application container deployed</li>
+            <li>Node Exporter running on port 9100</li>
+        </ul>
 
-        <!-- FINAL IDENTITY -->
-        <h2>08_IDENTITY_OVERRIDE</h2>
-        <p>Final system update: Changing <code>DevOps Engineer</code> to <span>Syed Azam</span> in <code>docker-compose.yml</code>.</p>
+        <h3>Monitoring Server</h3>
+        <ul>
+            <li>Docker installed</li>
+            <li>Prometheus + Grafana deployed using Docker Compose</li>
+            <li>Prometheus scrapes Web Server metrics</li>
+            <li>Grafana exposed securely via <strong>Cloudflare Tunnel</strong></li>
+        </ul>
+
+        <h3>Run Ansible</h3>
         <pre>
-git add .
-git commit -m "Identity change: Syed Azam"
-git push
-        </pre>
+aws ssm start-session --target &lt;ANSIBLE_CONTROLLER_INSTANCE_ID&gt;
+sudo -iu ubuntu
+git clone https://github.com.git
+cd devops-bootcamp-project/ansible
+# Ubuntu/devop-bootcamp-project/ansible/group_vars/cloudflare_token.yml
+cd group_vars
+nano cloudflare_token.yml 
+# Paste Inside cloudflare_token.yml
+cloudflared_tunnel_token: "TOKEN_FROM_LOCAL_CLOUDFLARE_TOKEN.YML"
+# Run Playbook
+cd ../playbooks
+ansible-playbook /site.yml</pre>
 
-        <div class="footer">
-            <p>TERMINAL TERMINATED // 2026 LOG RECORDED</p>
-            <p>DESIGNED BY <span>SYED AZAM</span></p>
+        <h2>Cloudflare + Cloudflare Tunnel (ZeroTrust)</h2>
+        <h3>Dns Record</h3>
+        <ul>
+            <li>Type A : Web : (IP)</li>
+            <li>Type A : Web : (IP)</li>
+            <li>Type Cname : Monitoring : (from tunnel)</li>
+        </ul>
+        <h3>SSL/TLS</h3>
+        <ul>
+            <li>Set to Flexible (per project task)</li>
+        </ul>
+        <h3>Zero Trust (Tunnel)</h3>
+        <ul>
+            <li>monitoring-tunnel</li>
+        </ul>
+
+        <h2>Prometheus Dashboard</h2>
+        <h3>Boring Easy Approach</h3>
+        <ul>
+            <li>Import</li>
+        </ul>
+
+        <h2>Git Hub Action Docker Build</h2>
+        <h3>AWS Console</h3>
+        <ul>
+            <li>Create Iam User</li>
+            <li>Attach Permission
+                <blockquote>AmazonEC2ContainerRegistryFullAccess<br>AmazonSSMFullAccess</blockquote>
+            </li>
+            <li>Create Acces Key</li>
+        </ul>
+
+        <h3>Add GitHub Secrets</h3>
+        <ul>
+            <li>AWS_ACCESS_KEY_ID = (secret)</li>
+            <li>AWS_SECRET_ACCESS_KEY = (secret)</li>
+            <li>AWS_REGION = ap-southeast-1</li>
+            <li>AWS_ACCOUNT_ID = (secret)</li>
+            <li>ANSIBLE_CONTROLLER_ID = (i-ooooyourownec2idoooo)</li>
+        </ul>
+
+        <h2>Change DevOps Engineer > Syed Azam</h2>
+        <h3>Local</h3>
+        <p>docker-compose.yml > USER_NAME=${USER_NAME:-DevOps Engineer} > USER_NAME=${USER_NAME:-Syed Azam}</p>
+        <pre>
+- git add .
+- git commit -m "blabla"
+- git push</pre>
+
+        <h2>Documentation (local to git hub pages)</h2>
+        <p>Docs/README.md: index.html, .nojeklly</p>
+
+        <div style="text-align: center; margin-top: 50px; opacity: 0.7;">
+            <p>SYSTEM TIMESTAMP: 2026-01-18 // ACCESS GRANTED</p>
         </div>
     </div>
-
 </body>
 </html>
