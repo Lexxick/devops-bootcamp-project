@@ -3,342 +3,385 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scroll of DevOps Mastery</title>
+    <title>The DevOps Chronicles | RPG Town Quest Log</title>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
         :root {
-            --parchment: #f4e4bc;
-            --ink: #2c1e16;
             --gold: #d4af37;
-            --wax-red: #8b0000;
+            --blood: #8b0000;
+            --parchment: #fcf6e4; /* Lighter parchment for readability */
+            --ink: #2c1e16;
+            --overlay-bg: rgba(255, 255, 255, 0.9); /* Slightly transparent overlay for readability */
         }
 
         body {
-            background-color: #1a0f00;
-            margin: 0;
-            overflow-x: hidden;
-            font-family: 'Almendra', serif;
             color: var(--ink);
-            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            font-family: 'Almendra', serif;
+            overflow-x: hidden;
+            background-color: #333; /* Fallback color */
         }
 
-        /* Moving Ember Background */
-        #canvas-bg {
+        /* Bustling RPG Town Background Image */
+        .background-town {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
+            width: 200%; /* Double width for seamless loop */
             height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at center, #2c1e16 0%, #000000 100%);
+            background-image: url('https://i.imgur.com'); /* High-res fantasy village background */
+            background-size: cover;
+            background-repeat: repeat-x;
+            z-index: -2;
+            animation: moveBackground 60s linear infinite; /* Infinite slow scroll */
         }
 
-        .scroll-container {
+        @keyframes moveBackground {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* Move exactly half the width */
+        }
+
+        .scroll-wrapper {
             max-width: 900px;
-            margin: 50px auto;
-            padding: 60px 80px;
-            background: var(--parchment);
-            background-image: url('https://www.transparenttextures.com');
-            box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 100px rgba(139, 69, 19, 0.2);
-            border-radius: 5px;
+            margin: 40px auto;
             position: relative;
-            border-left: 15px solid #3d2b1f;
-            border-right: 15px solid #3d2b1f;
+            padding: 20px;
         }
 
-        /* Scroll Headers */
+        /* Content container with a semi-transparent overlay to make text visible over the bright background */
+        .scroll {
+            background: var(--overlay-bg);
+            padding: 60px 80px;
+            border: 2px solid #5d4037;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5), inset 0 0 30px rgba(139, 69, 19, 0.1);
+            position: relative;
+            min-height: 1000px;
+            border-radius: 5px;
+        }
+
         h1 {
-            font-family: 'Cinzel', serif;
-            text-align: center;
+            font-family: 'Cinzel Decorative', cursive;
             font-size: 3rem;
-            color: var(--wax-red);
-            border-bottom: 2px double var(--gold);
-            margin-bottom: 10px;
+            text-align: center;
+            color: var(--blood);
+            margin-bottom: 0;
+            text-shadow: 1px 1px 0px var(--gold);
         }
 
         .subtitle {
             text-align: center;
             font-family: 'MedievalSharp', cursive;
-            font-size: 1.5rem;
-            margin-bottom: 40px;
+            font-size: 1.3rem;
             color: #5d4037;
+            margin-bottom: 40px;
         }
 
         h2 {
-            font-family: 'Cinzel', serif;
-            border-left: 5px solid var(--wax-red);
-            padding-left: 15px;
+            font-family: 'Cinzel Decorative', cursive;
+            border-bottom: 1px solid var(--gold);
+            display: block;
             margin-top: 40px;
             color: #4e342e;
-            text-transform: uppercase;
+            padding-bottom: 5px;
         }
 
         h3 {
             font-family: 'MedievalSharp', cursive;
             color: #795548;
+            border-left: 3px solid var(--gold);
+            padding-left: 10px;
         }
 
-        /* Code & Runes */
-        pre, code {
-            background: rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(139, 69, 19, 0.3);
-            font-family: 'Courier New', Courier, monospace;
-            border-radius: 4px;
-        }
-
-        pre {
-            padding: 15px;
-            overflow-x: auto;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.1);
-        }
-
-        code {
-            padding: 2px 5px;
-            color: #a52a2a;
-        }
-
-        /* Links */
-        a {
-            color: #8b4513;
-            text-decoration: none;
-            font-weight: bold;
+        /* Links with Glow */
+        a { 
+            color: #8b4513; 
+            text-decoration: none; 
+            font-weight: bold; 
             transition: color 0.3s;
         }
 
         a:hover {
-            color: var(--wax-red);
+            color: var(--blood);
             text-decoration: underline;
         }
 
-        /* Table of Records */
+        /* Code Blocks as Magic Spells */
+        pre {
+            background: #fffdf9; /* Lighter code background */
+            color: var(--ink);
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'monospace';
+            font-size: 0.9rem;
+            overflow-x: auto;
+            border: 1px solid #d4af37;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        code { color: var(--blood); font-weight: bold; }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
-            background: rgba(255, 255, 255, 0.3);
         }
 
         th, td {
-            border: 1px solid rgba(139, 69, 19, 0.4);
-            padding: 12px;
+            border: 1px solid rgba(139, 69, 19, 0.2);
+            padding: 10px;
             text-align: left;
         }
 
-        th {
-            background: rgba(139, 69, 19, 0.1);
-            font-family: 'Cinzel', serif;
-        }
-
-        /* Decorative Elements */
-        .wax-seal {
-            width: 80px;
-            height: 80px;
-            background: var(--wax-red);
-            border-radius: 50%;
-            display: block;
-            margin: 40px auto;
-            box-shadow: 2px 4px 10px rgba(0,0,0,0.5);
-            position: relative;
-            border: 3px solid #6b0000;
-        }
-
-        .wax-seal::after {
-            content: "SA";
-            color: var(--gold);
-            font-family: 'Cinzel', serif;
-            font-weight: bold;
-            font-size: 24px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        blockquote {
-            border-left: 3px italic var(--gold);
-            margin: 10px 20px;
-            padding-left: 15px;
-            color: #6d4c41;
-            font-style: italic;
-        }
+        th { background: rgba(139, 69, 19, 0.05); }
 
         hr {
             border: 0;
-            height: 2px;
-            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(212, 175, 55, 0.75), rgba(0, 0, 0, 0));
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(139, 69, 19, 0.7), rgba(0, 0, 0, 0));
             margin: 30px 0;
+        }
+
+        .footer-seal {
+            text-align: center;
+            margin-top: 50px;
         }
     </style>
 </head>
 <body>
 
-    <canvas id="canvas-bg"></canvas>
+<div class="background-town"></div>
 
-    <div class="scroll-container">
+<div class="scroll-wrapper">
+    <div class="scroll">
         <h1>DevOps Bootcamp Final Project</h1>
-        <p class="subtitle">"Trust Me, I’m a DevOps Engineer"</p>
+        <div class="subtitle">"Trust Me, I’m a DevOps Engineer"</div>
 
-        <section id="links">
-            <h2>🔗 Gateways & Portals</h2>
-            <ul>
-                <li><strong>Ancient Repository:</strong> <a href="https://github.com/Lexxick/devops-bootcamp-project">GitHub Lexxick</a></li>
-                <li><strong>Public Tavern (Web):</strong> <a href="http://web.syedazam.my">web.syedazam.my</a></li>
-                <li><strong>The Watchtower (Grafana):</strong> <a href="https://monitoring.syedazam.my">monitoring.syedazam.my</a></li>
-                <li><strong>The Library (Docs):</strong> <a href="https://lexxick.github.io/devops-bootcamp-project/">GitHub Pages</a></li>
-            </ul>
-        </section>
+        <!-- SECTION: LINKS -->
+        <h2>🔗 Gateways to the Realm</h2>
+        <ul>
+            <li><strong>GitHub Repository:</strong> <a href="https://github.com">https://github.com</a></li>
+            <li><strong>Web Application:</strong> <a href="http://web.syedazam.my">http://web.syedazam.my</a></li>
+            <li><strong>Monitoring (Grafana via Cloudflare Tunnel):</strong> <a href="https://monitoring.syedazam.my">https://monitoring.syedazam.my</a></li>
+            <li><strong>Documentation (GitHub Pages):</strong> <a href="https://lexxick.github.io">https://lexxick.github.io</a></li>
+        </ul>
 
         <hr>
 
-        <section id="setup">
-            <h2>Local Setup</h2>
-            <h3>The Git Tomes</h3>
-            <ul>
-                <li>.gitignore</li>
-                <li>.github/workflows
-                    <blockquote>pages.yml<br>ecr-build-push.yml</blockquote>
-                </li>
-            </ul>
+        <!-- SECTION: LOCAL SETUP -->
+        <h2>Local Setup</h2>
+        <h3>Git</h3>
+        <ul>
+            <li><code>.gitignore</code></li>
+            <li><code>.github/workflows</code>
+                <ul>
+                    <li><code>pages.yml</code></li>
+                    <li><code>ecr-build-push.yml</code></li>
+                </ul>
+            </li>
+        </ul>
 
-            <h3>Terraform Blueprints</h3>
-            <p>A series of scrolls defining the realm: <code>providers.tf</code>, <code>iam.tf</code>, <code>vpc.tf</code>, and the <code>user_data</code> incantations to summon prerequisites.</p>
+        <h3>Terraform Structure</h3>
+        <ul>
+            <li><code>providers.tf</code></li>
+            <li><code>iam.tf</code></li>
+            <li><code>backend.tf</code></li>
+            <li><code>ec2.tf</code></li>
+            <li><code>ecr.tf</code></li>
+            <li><code>vpc.tf</code></li>
+            <li><code>security.tf</code></li>
+            <li><code>variables.tf</code></li>
+            <li><code>bootstrap.tf</code></li>
+            <li><code>user_data_controller.sh</code> <em>*Install all prerequisites and write SSH Key</em></li>
+            <li><code>user_data_node.sh</code> <em>*Install all prerequisites and write SSH Key</em></li>
+            <li><code>outputs.tf</code></li>
+        </ul>
 
-            <h3>Ansible Grimoires</h3>
-            <p>Playbooks for <code>site.yml</code>, <code>web.yml</code>, and <code>monitoring.yml</code> with Jinja2 alchemy.</p>
-        </section>
+        <h3>Ansible Structure</h3>
+        <ul>
+            <li>playbooks
+                <ul>
+                    <li><code>site.yml</code></li>
+                    <li><code>web.yml</code></li>
+                    <li><code>monitoring.yml</code></li>
+                </ul>
+            </li>
+            <li>group_vars
+                <ul>
+                    <li><code>all.yml</code></li>
+                    <li><code>cloudflare_token.yml</code> <em>*manually added into ec2 to avoid git hub</em></li>
+                </ul>
+            </li>
+            <li>templates
+                <ul>
+                    <li><code>docker-compose.yml.j2</code></li>
+                    <li><code>prometheus.yml.j2</code></li>
+                </ul>
+            </li>
+        </ul>
 
-        <section id="alchemy">
-            <h2>Docker Alchemy (ECR)</h2>
-            <pre>
-git clone https://github.com/Infratify/lab-final-project 
+        <h3>Docker Image to ECR</h3>
+        <pre>
+git clone https://github.com 
 mv lab-final-project docker
 cd docker
-
-# Authenticate with the AWS Forge
-aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin &lt;ECR-id&gt;.dkr.ecr.ap-southeast-1.amazonaws.com
-
-# Transmute Code into Image
+aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin &lt;ECR-id&gt;://; #Get in AWS Console view push commands
 docker build -t devops-bootcamp-project-syedazam .
-docker tag devops-bootcamp-project-syedazam:latest &lt;ECR-id&gt;://;
-docker push &lt;ECR-id&gt;://;</pre>
-        </section>
+docker tag &lt;ECR-Container-Name&gt;:latest &lt;ECR-id&gt;://; #Get in AWS Console view push commands
+docker push &lt;ECR-id&gt;://; #Get in AWS Console view push commands</pre>
 
-        <section id="infra">
-            <h2>🏗 Infrastructure (Terraform)</h2>
-            <p>Provisioned in the <code>ap-southeast-1</code> territories.</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Role</th>
-                        <th>Private IP</th>
-                        <th>Access Method</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Web Server</td>
-                        <td>10.0.0.5</td>
-                        <td>Public (EIP)</td>
-                    </tr>
-                    <tr>
-                        <td>Ansible Controller</td>
-                        <td>10.0.0.135</td>
-                        <td>Private (SSM only)</td>
-                    </tr>
-                    <tr>
-                        <td>Monitoring Server</td>
-                        <td>10.0.0.136</td>
-                        <td>Private (Cloudflare Tunnel)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
+        <hr>
 
-        <section id="ansible">
-            <h2>⚙️ Configuration Management</h2>
-            <p>The <strong>Ansible Controller</strong> commands the legions of containers.</p>
-            <pre>
-# Summon the Controller Session
-aws ssm start-session --target &lt;ANSIBLE_CONTROLLER_ID&gt;
+        <h2>🏗 Infrastructure (Terraform)</h2>
+        <p>All infrastructure is provisioned using <strong>Terraform</strong> in <code>ap-southeast-1</code>.</p>
+        <h3>Network</h3>
+        <ul>
+            <li>VPC: <code>10.0.0.0/24</code></li>
+            <li>Public Subnet: <code>10.0.0.0/25</code></li>
+            <li>Private Subnet: <code>10.0.0.128/25</code></li>
+            <li>Internet Gateway + NAT Gateway</li>
+        </ul>
+
+        <h3>EC2 Instances</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Role</th>
+                    <th>Private IP</th>
+                    <th>Access</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Web Server</td>
+                    <td>10.0.0.5</td>
+                    <td>Public (EIP)</td>
+                </tr>
+                <tr>
+                    <td>Ansible Controller</td>
+                    <td>10.0.0.135</td>
+                    <td>Private (SSM only)</td>
+                </tr>
+                <tr>
+                    <td>Monitoring Server</td>
+                    <td>10.0.0.136</td>
+                    <td>Private (Cloudflare Tunnel)</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Notes</h3>
+        <ul>
+            <li>Terraform state stored in <strong>S3</strong></li>
+            <li><code>user_data_controller.sh</code> installs Ansible and prepares inventory</li>
+            <li><code>user_data_node.sh</code> installs Docker and Node Exporter</li>
+            <li>All servers are accessed via <strong>AWS SSM</strong></li>
+        </ul>
+
+        <hr>
+
+        <h2>⚙️ Configuration Management (Ansible)</h2>
+        <p>All Ansible tasks are executed from the <strong>Ansible Controller</strong>.</p>
+        <h3>Web Server</h3>
+        <ul>
+            <li>Docker installed</li>
+            <li>Application container deployed</li>
+            <li>Node Exporter running on port <code>9100</code></li>
+        </ul>
+        <h3>Monitoring Server</h3>
+        <ul>
+            <li>Docker installed</li>
+            <li>Prometheus + Grafana deployed using Docker Compose</li>
+            <li>Prometheus scrapes Web Server metrics</li>
+            <li>Grafana exposed securely via <strong>Cloudflare Tunnel</strong></li>
+        </ul>
+
+        <h3>Run Ansible</h3>
+        <pre>
+aws ssm start-session --target &lt;ANSIBLE_CONTROLLER_INSTANCE_ID&gt;
 sudo -iu ubuntu
-
-# Clone the Grimoire
-git clone https://github.com/Lexxick/devops-bootcamp-project.git
-cd devops-bootcamp-project/ansible/playbooks
-
-# Cast the Final Spell
+git clone https://github.com.git
+cd devops-bootcamp-project/ansible/group_vars
+nano cloudflare_token.yml 
+# Paste Inside cloudflare_token.yml:
+# cloudflared_tunnel_token: "TOKEN_FROM_LOCAL_CLOUDFLARE_TOKEN.YML"
+cd ../playbooks
 ansible-playbook site.yml</pre>
-        </section>
 
-        <section id="actions">
-            <h2>GitHub Actions Ritual</h2>
-            <p>Establish trust through IAM secrets: <code>AWS_ACCESS_KEY_ID</code>, <code>AWS_SECRET_ACCESS_KEY</code>, and the <code>ANSIBLE_CONTROLLER_ID</code>.</p>
-        </section>
+        <hr>
 
-        <div class="wax-seal"></div>
-        <p style="text-align: center; font-family: 'Cinzel', serif;">Signed & Sealed by Syed Azam</p>
+        <h2>Cloudflare + Cloudflare Tunnel (ZeroTrust)</h2>
+        <h3>Dns Record</h3>
+        <ul>
+            <li>Type A : Web : (IP)</li>
+            <li>Type A : Web : (IP)</li>
+            <li>Type Cname : Monitoring : (from tunnel)</li>
+        </ul>
+        <h3>SSL/TLS</h3>
+        <ul>
+            <li>Set to Flexible (per project task)</li>
+        </ul>
+        <h3>Zero Trust (Tunnel)</h3>
+        <ul>
+            <li>monitoring-tunnel</li>
+        </ul>
+
+        <hr>
+
+        <h2>Prometheus Dashboard</h2>
+        <h3>Boring Easy Approach</h3>
+        <ul>
+            <li>Import</li>
+        </ul>
+
+        <hr>
+
+        <h2>Git Hub Action Docker Build</h2>
+        <h3>AWS Console</h3>
+        <ul>
+            <li>Create Iam User</li>
+            <li>Attach Permission
+                <ul>
+                    <li><code>AmazonEC2ContainerRegistryFullAccess</code></li>
+                    <li><code>AmazonSSMFullAccess</code></li>
+                </ul>
+            </li>
+            <li>Create Acces Key</li>
+        </ul>
+
+        <h3>Add GitHub Secrets (so Actions can login to AWS)</h3>
+        <ul>
+            <li><code>AWS_ACCESS_KEY_ID</code> = (secret)</li>
+            <li><code>AWS_SECRET_ACCESS_KEY</code> = (secret)</li>
+            <li><code>AWS_REGION</code> = <code>ap-southeast-1</code></li>
+            <li><code>AWS_ACCOUNT_ID</code> = (secret)</li>
+            <li><code>ANSIBLE_CONTROLLER_ID</code> = (i-ooooyourownec2idoooo)</li>
+        </ul>
+
+        <hr>
+
+        <h2>Change DevOps Engineer > Syed Azam</h2>
+        <h3>Local</h3>
+        <p><code>docker-compose.yml</code> > <code>USER_NAME=${USER_NAME:-DevOps Engineer}</code> > <code>USER_NAME=${USER_NAME:-Syed Azam}</code></p>
+        <pre>
+git add .
+git commit -m "blabla"
+git push</pre>
+
+        <hr>
+
+        <h2>Documentation (local to git hub pages)</h2>
+        <h3>Docs/README.md</h3>
+        <ul>
+            <li><code>index.html</code></li>
+            <li><code>.nojeklly</code></li>
+        </ul>
+        
+        <div class="footer-seal">
+            <p style="font-family: 'Cinzel Decorative', cursive; font-size: 1.2rem;">Signed & Sealed</p>
+            <p>Syed Azam, Master of the Cloud & Guardian of the Deployment</p>
+        </div>
     </div>
+</div>
 
-    <script>
-        // Particle Background Script
-        const canvas = document.getElementById('canvas-bg');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        window.addEventListener('resize', resize);
-        resize();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = canvas.height + Math.random() * 100;
-                this.size = Math.random() * 3 + 1;
-                this.speedY = Math.random() * 1 + 0.5;
-                this.speedX = Math.random() * 1 - 0.5;
-                this.opacity = Math.random() * 0.5 + 0.3;
-            }
-
-            update() {
-                this.y -= this.speedY;
-                this.x += this.speedX;
-                if (this.y < 0) {
-                    this.y = canvas.height + 20;
-                    this.x = Math.random() * canvas.width;
-                }
-            }
-
-            draw() {
-                ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function init() {
-            for (let i = 0; i < 100; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            requestAnimationFrame(animate);
-        }
-
-        init();
-        animate();
-    </script>
 </body>
 </html>
