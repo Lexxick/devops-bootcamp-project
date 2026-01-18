@@ -1,10 +1,11 @@
-name: Build and Push to ECR
+name: Build, Push to ECR, Deploy via Ansible (SSM)
 
 on:
   push:
     branches: ["main"]
     paths:
       - "docker/**"
+      - "ansible/**"
       - ".github/workflows/ecr-build-push.yml"
   workflow_dispatch:
 
@@ -13,12 +14,13 @@ permissions:
   contents: read
 
 jobs:
-  build-and-push:
+  build-push-deploy:
     runs-on: ubuntu-latest
 
     env:
       AWS_REGION: ap-southeast-1
       ECR_REPO: devops-bootcamp/final-project-syedazam
+      ROLE_TO_ASSUME: arn:aws:iam::516267217090:role/github-actions-ecr-push
 
     steps:
       - name: Checkout
@@ -27,21 +29,59 @@ jobs:
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::516267217090:role/github-actions-ecr-push
-          aws-region: ap-southeast-1
+          role-to-assume: ${{ env.ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build, tag, push
+      - name: Build, tag, push to ECR
         run: |
           set -eux
           REGISTRY="$(aws sts get-caller-identity --query Account --output text).dkr.ecr.${AWS_REGION}.amazonaws.com"
-          IMAGE="$REGISTRY/$ECR_REPO"
+          IMAGE="${REGISTRY}/${ECR_REPO}"
           TAG="${GITHUB_SHA}"
 
-          # example: if your Dockerfile is inside docker/
-          docker build -t "$IMAGE:$TAG" -t "$IMAGE:latest" docker
+          docker build -t "${IMAGE}:${TAG}" -t "${IMAGE}:latest" docker
+          docker push "${IMAGE}:${TAG}"
+          docker push "${IMAGE}:latest"
 
-          docker push "$IMAGE:$TAG"
-          docker push "$IMAGE:latest"
+      - name: Deploy by running Ansible on Controller via SSM
+        env:
+          CONTROLLER_ID: ${{ secrets.ANSIBLE_CONTROLLER_INSTANCE_ID }}
+        run: |
+          set -eux
+
+          # Run shell commands on the Ansible Controller
+          COMMAND_ID=$(aws ssm send-command \
+            --region "${AWS_REGION}" \
+            --instance-ids "${CONTROLLER_ID}" \
+            --document-name "AWS-RunShellScript" \
+            --comment "Deploy after GitHub push: ${GITHUB_SHA}" \
+            --parameters commands='[
+              "set -eux",
+              "cd /home/ubuntu",
+              "if [ ! -d devops-bootcamp-project ]; then git clone https://github.com/Lexxick/devops-bootcamp-project.git; fi",
+              "cd devops-bootcamp-project",
+              "git fetch --all",
+              "git reset --hard origin/main",
+              "cd ansible",
+              "ansible --version",
+              "ansible-playbook playbooks/site.yml"
+            ]' \
+            --query "Command.CommandId" --output text)
+
+          echo "SSM CommandId: ${COMMAND_ID}"
+
+          # Wait + show result
+          aws ssm wait command-executed \
+            --region "${AWS_REGION}" \
+            --command-id "${COMMAND_ID}" \
+            --instance-id "${CONTROLLER_ID}"
+
+          aws ssm get-command-invocation \
+            --region "${AWS_REGION}" \
+            --command-id "${COMMAND_ID}" \
+            --instance-id "${CONTROLLER_ID}" \
+            --query '{Status:Status,StdOut:StandardOutputContent,StdErr:StandardErrorContent}' \
+            --output text

@@ -3,243 +3,342 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevOps Project | Terminal 2026</title>
+    <title>Scroll of DevOps Mastery</title>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
         :root {
-            --neon-blue: #00f3ff;
-            --neon-purple: #bc13fe;
-            --bg-dark: #0a0b10;
-            --card-bg: rgba(20, 22, 35, 0.8);
-            --terminal-green: #33ff00;
+            --parchment: #f4e4bc;
+            --ink: #2c1e16;
+            --gold: #d4af37;
+            --wax-red: #8b0000;
         }
 
         body {
-            background-color: var(--bg-dark);
-            background-image: 
-                radial-gradient(circle at 2px 2px, rgba(0, 243, 255, 0.05) 1px, transparent 0);
-            background-size: 40px 40px;
-            color: #e0e0e0;
-            font-family: 'Fira Code', monospace;
+            background-color: #1a0f00;
             margin: 0;
-            padding: 20px;
+            overflow-x: hidden;
+            font-family: 'Almendra', serif;
+            color: var(--ink);
             line-height: 1.6;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            padding: 40px 0;
-            border-bottom: 2px solid var(--neon-blue);
-            margin-bottom: 40px;
-            box-shadow: 0 10px 20px -10px var(--neon-blue);
-        }
-
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            color: var(--neon-blue);
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            margin: 0;
-            text-shadow: 0 0 15px var(--neon-blue);
-        }
-
-        .status-bar {
-            font-size: 0.8rem;
-            color: var(--neon-purple);
-            margin-top: 10px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid rgba(0, 243, 255, 0.2);
-            padding: 20px;
-            border-radius: 5px;
-            position: relative;
-            backdrop-filter: blur(10px);
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
-        }
-
-        h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            color: var(--neon-purple);
-            border-left: 4px solid var(--neon-purple);
-            padding-left: 15px;
-            margin-top: 0;
-        }
-
-        a {
-            color: var(--neon-blue);
-            text-decoration: none;
-            word-break: break-all;
-            font-size: 0.9rem;
-        }
-
-        a:hover {
-            text-decoration: underline;
-            text-shadow: 0 0 8px var(--neon-blue);
-        }
-
-        table {
+        /* Moving Ember Background */
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            font-size: 0.85rem;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #2c1e16 0%, #000000 100%);
         }
 
-        th {
-            text-align: left;
-            color: var(--neon-blue);
-            border-bottom: 1px solid var(--neon-blue);
-            padding: 10px;
-        }
-
-        td {
-            padding: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .terminal-box {
-            background: #000;
+        .scroll-container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 60px 80px;
+            background: var(--parchment);
+            background-image: url('https://www.transparenttextures.com');
+            box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 100px rgba(139, 69, 19, 0.2);
             border-radius: 5px;
-            padding: 20px;
-            margin-top: 20px;
             position: relative;
-            border-left: 4px solid var(--terminal-green);
+            border-left: 15px solid #3d2b1f;
+            border-right: 15px solid #3d2b1f;
         }
 
-        .terminal-box::before {
-            content: "SYSTEM_CONSOLE_V2.6";
-            position: absolute;
-            top: -12px;
-            right: 15px;
-            font-size: 0.7rem;
-            background: var(--bg-dark);
-            padding: 0 10px;
-            color: var(--terminal-green);
-        }
-
-        code {
-            color: var(--terminal-green);
-            display: block;
-            margin: 10px 0;
-            font-size: 0.9rem;
-        }
-
-        .cmd-prefix { color: #ff00ff; margin-right: 10px; }
-
-        .tag {
-            display: inline-block;
-            background: rgba(188, 19, 254, 0.2);
-            padding: 2px 10px;
-            border-radius: 10px;
-            font-size: 0.7rem;
+        /* Scroll Headers */
+        h1 {
+            font-family: 'Cinzel', serif;
+            text-align: center;
+            font-size: 3rem;
+            color: var(--wax-red);
+            border-bottom: 2px double var(--gold);
             margin-bottom: 10px;
         }
 
+        .subtitle {
+            text-align: center;
+            font-family: 'MedievalSharp', cursive;
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            color: #5d4037;
+        }
+
+        h2 {
+            font-family: 'Cinzel', serif;
+            border-left: 5px solid var(--wax-red);
+            padding-left: 15px;
+            margin-top: 40px;
+            color: #4e342e;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            font-family: 'MedievalSharp', cursive;
+            color: #795548;
+        }
+
+        /* Code & Runes */
+        pre, code {
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(139, 69, 19, 0.3);
+            font-family: 'Courier New', Courier, monospace;
+            border-radius: 4px;
+        }
+
+        pre {
+            padding: 15px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.1);
+        }
+
+        code {
+            padding: 2px 5px;
+            color: #a52a2a;
+        }
+
+        /* Links */
+        a {
+            color: #8b4513;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--wax-red);
+            text-decoration: underline;
+        }
+
+        /* Table of Records */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        th, td {
+            border: 1px solid rgba(139, 69, 19, 0.4);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(139, 69, 19, 0.1);
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Decorative Elements */
+        .wax-seal {
+            width: 80px;
+            height: 80px;
+            background: var(--wax-red);
+            border-radius: 50%;
+            display: block;
+            margin: 40px auto;
+            box-shadow: 2px 4px 10px rgba(0,0,0,0.5);
+            position: relative;
+            border: 3px solid #6b0000;
+        }
+
+        .wax-seal::after {
+            content: "SA";
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 24px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        blockquote {
+            border-left: 3px italic var(--gold);
+            margin: 10px 20px;
+            padding-left: 15px;
+            color: #6d4c41;
+            font-style: italic;
+        }
+
+        hr {
+            border: 0;
+            height: 2px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(212, 175, 55, 0.75), rgba(0, 0, 0, 0));
+            margin: 30px 0;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>Trust Me, I’m a DevOps Engineer</h1>
-        <div class="status-bar">SYSTEM STATUS: <span style="color: var(--terminal-green)">ONLINE</span> | REGION: ap-southeast-1 | PROTOCOL: TERRAFORM_V1.6</div>
-    </header>
+    <canvas id="canvas-bg"></canvas>
 
-    <div class="grid">
-        <div class="card">
-            <h2>🔗 Access Nodes</h2>
-            <p><strong>GitHub:</strong> <a href="https://github.com/Lexxick/devops-bootcamp-project" target="_blank">View Repository</a></p>
-            <p><strong>WebApp:</strong> <a href="http://web.syedazam.my" target="_blank">web.syedazam.my</a></p>
-            <p><strong>Metrics:</strong> <a href="https://monitoring.syedazam.my" target="_blank">monitoring.syedazam.my</a></p>
-            <p><strong>Docs:</strong> <a href="https://lexxick.github.io/devops-bootcamp-project/" target="_blank">GitHub Pages</a></p>
-        </div>
+    <div class="scroll-container">
+        <h1>DevOps Bootcamp Final Project</h1>
+        <p class="subtitle">"Trust Me, I’m a DevOps Engineer"</p>
 
-        <div class="card">
-            <h2>🏗 Infrastructure</h2>
-            <div class="tag">TERRAFORM ARCHITECTURE</div>
+        <section id="links">
+            <h2>🔗 Gateways & Portals</h2>
+            <ul>
+                <li><strong>Ancient Repository:</strong> <a href="https://github.com/Lexxick/devops-bootcamp-project">GitHub Lexxick</a></li>
+                <li><strong>Public Tavern (Web):</strong> <a href="http://web.syedazam.my">web.syedazam.my</a></li>
+                <li><strong>The Watchtower (Grafana):</strong> <a href="https://monitoring.syedazam.my">monitoring.syedazam.my</a></li>
+                <li><strong>The Library (Docs):</strong> <a href="https://lexxick.github.io/devops-bootcamp-project/">GitHub Pages</a></li>
+            </ul>
+        </section>
+
+        <hr>
+
+        <section id="setup">
+            <h2>Local Setup</h2>
+            <h3>The Git Tomes</h3>
+            <ul>
+                <li>.gitignore</li>
+                <li>.github/workflows
+                    <blockquote>pages.yml<br>ecr-build-push.yml</blockquote>
+                </li>
+            </ul>
+
+            <h3>Terraform Blueprints</h3>
+            <p>A series of scrolls defining the realm: <code>providers.tf</code>, <code>iam.tf</code>, <code>vpc.tf</code>, and the <code>user_data</code> incantations to summon prerequisites.</p>
+
+            <h3>Ansible Grimoires</h3>
+            <p>Playbooks for <code>site.yml</code>, <code>web.yml</code>, and <code>monitoring.yml</code> with Jinja2 alchemy.</p>
+        </section>
+
+        <section id="alchemy">
+            <h2>Docker Alchemy (ECR)</h2>
+            <pre>
+git clone https://github.com/Infratify/lab-final-project 
+mv lab-final-project docker
+cd docker
+
+# Authenticate with the AWS Forge
+aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin &lt;ECR-id&gt;.dkr.ecr.ap-southeast-1.amazonaws.com
+
+# Transmute Code into Image
+docker build -t devops-bootcamp-project-syedazam .
+docker tag devops-bootcamp-project-syedazam:latest &lt;ECR-id&gt;://;
+docker push &lt;ECR-id&gt;://;</pre>
+        </section>
+
+        <section id="infra">
+            <h2>🏗 Infrastructure (Terraform)</h2>
+            <p>Provisioned in the <code>ap-southeast-1</code> territories.</p>
             <table>
-                <tr><th>Role</th><th>Network</th></tr>
-                <tr><td>VPC</td><td>10.0.0.0/24</td></tr>
-                <tr><td>Public Subnet</td><td>10.0.0.0/25</td></tr>
-                <tr><td>Private Subnet</td><td>10.0.0.128/25</td></tr>
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Private IP</th>
+                        <th>Access Method</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Web Server</td>
+                        <td>10.0.0.5</td>
+                        <td>Public (EIP)</td>
+                    </tr>
+                    <tr>
+                        <td>Ansible Controller</td>
+                        <td>10.0.0.135</td>
+                        <td>Private (SSM only)</td>
+                    </tr>
+                    <tr>
+                        <td>Monitoring Server</td>
+                        <td>10.0.0.136</td>
+                        <td>Private (Cloudflare Tunnel)</td>
+                    </tr>
+                </tbody>
             </table>
-        </div>
+        </section>
+
+        <section id="ansible">
+            <h2>⚙️ Configuration Management</h2>
+            <p>The <strong>Ansible Controller</strong> commands the legions of containers.</p>
+            <pre>
+# Summon the Controller Session
+aws ssm start-session --target &lt;ANSIBLE_CONTROLLER_ID&gt;
+sudo -iu ubuntu
+
+# Clone the Grimoire
+git clone https://github.com/Lexxick/devops-bootcamp-project.git
+cd devops-bootcamp-project/ansible/playbooks
+
+# Cast the Final Spell
+ansible-playbook site.yml</pre>
+        </section>
+
+        <section id="actions">
+            <h2>GitHub Actions Ritual</h2>
+            <p>Establish trust through IAM secrets: <code>AWS_ACCESS_KEY_ID</code>, <code>AWS_SECRET_ACCESS_KEY</code>, and the <code>ANSIBLE_CONTROLLER_ID</code>.</p>
+        </section>
+
+        <div class="wax-seal"></div>
+        <p style="text-align: center; font-family: 'Cinzel', serif;">Signed & Sealed by Syed Azam</p>
     </div>
 
-    <div class="card" style="margin-bottom: 30px;">
-        <h2>🖥 EC2 Instance Matrix</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Asset Role</th>
-                    <th>Private IP</th>
-                    <th>Access Protocol</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Web Server</td>
-                    <td>10.0.0.5</td>
-                    <td>Public (Elastic IP)</td>
-                </tr>
-                <tr>
-                    <td>Ansible Controller</td>
-                    <td>10.0.0.135</td>
-                    <td>AWS SSM (Private)</td>
-                </tr>
-                <tr>
-                    <td>Monitoring Server</td>
-                    <td>10.0.0.136</td>
-                    <td>Cloudflare Tunnel</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <script>
+        // Particle Background Script
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
 
-    <div class="card">
-        <h2>⚙️ Configuration & Deployment</h2>
-        <p>Execution sequences for Ansible Controller automation:</p>
-        
-        <div class="terminal-box">
-            <code><span class="cmd-prefix">$</span>aws ssm start-session --target &lt;CONTROLLER_ID&gt;</code>
-            <code><span class="cmd-prefix">$</span>sudo -iu ubuntu</code>
-            <code><span class="cmd-prefix">$</span>git clone https://github.com/Lexxick/devops-bootcamp-project.git</code>
-            <code><span class="cmd-prefix">$</span>cd ansible && ansible-playbook playbooks/site.yml</code>
-        </div>
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
 
-        <h2 style="margin-top: 40px;">📦 ECR Container Pipeline</h2>
-        <div class="terminal-box">
-            <code><span class="cmd-prefix">></span>docker build -t devops-bootcamp-project-syedazam .</code>
-            <code><span class="cmd-prefix">></span>docker tag <tag_id> <ecr_uri>:latest</code>
-            <code><span class="cmd-prefix">></span>docker push <ecr_uri>:latest</code>
-        </div>
-    </div>
+        window.addEventListener('resize', resize);
+        resize();
 
-    <footer style="text-align: center; margin-top: 50px; font-size: 0.7rem; opacity: 0.5;">
-        &copy; 2026 SYED AZAM DEVOPS OPS_CENTER | SECURED BY AWS SSM & CLOUDFLARE
-    </footer>
-</div>
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 100;
+                this.size = Math.random() * 3 + 1;
+                this.speedY = Math.random() * 1 + 0.5;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.opacity = Math.random() * 0.5 + 0.3;
+            }
 
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                if (this.y < 0) {
+                    this.y = canvas.height + 20;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+    </script>
 </body>
 </html>

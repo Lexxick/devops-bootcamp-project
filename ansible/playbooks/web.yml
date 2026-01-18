@@ -18,14 +18,6 @@
           - unzip
         state: present
 
-    - name: Install AWS CLI v2
-      shell: |
-        curl -fsSL https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o /tmp/awscliv2.zip
-        unzip -o /tmp/awscliv2.zip -d /tmp
-        /tmp/aws/install || true
-      args:
-        executable: /bin/bash
-
     - name: Enable docker
       systemd:
         name: docker
@@ -37,6 +29,20 @@
         name: ubuntu
         groups: docker
         append: yes
+
+    - name: Install AWS CLI v2 (idempotent)
+      shell: |
+        set -eux
+        if command -v aws >/dev/null 2>&1; then
+          aws --version
+          exit 0
+        fi
+        curl -fsSL https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o /tmp/awscliv2.zip
+        unzip -o /tmp/awscliv2.zip -d /tmp
+        /tmp/aws/install
+        aws --version
+      args:
+        executable: /bin/bash
 
     - name: Run node exporter (port 9100)
       shell: |
@@ -50,22 +56,42 @@
 
     - name: Login to ECR using EC2 IAM role
       shell: |
+        set -eux
         aws ecr get-login-password --region {{ aws_region }} \
           | docker login --username AWS --password-stdin {{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com
       args:
         executable: /bin/bash
 
-    - name: Pull app image from ECR
-      shell: docker pull {{ app_image }}
+    - name: Pull app image from ECR (latest)
+      shell: |
+        set -eux
+        docker pull {{ app_image }}
       args:
         executable: /bin/bash
 
-    - name: Run app container on port 80
+    - name: Run app container on port 80 (restart with new image)
       shell: |
+        set -eux
         docker rm -f "{{ app_container }}" >/dev/null 2>&1 || true
         docker run -d --name "{{ app_container }}" \
           --restart unless-stopped \
           -p 80:80 \
           "{{ app_image }}"
+      args:
+        executable: /bin/bash
+
+    - name: Wait for app to be reachable on localhost
+      shell: |
+        set -eux
+        for i in $(seq 1 30); do
+          code="$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1/ || true)"
+          if [ "$code" = "200" ] || [ "$code" = "301" ] || [ "$code" = "302" ]; then
+            echo "App is up: HTTP $code"
+            exit 0
+          fi
+          sleep 2
+        done
+        echo "App did not become ready"
+        exit 1
       args:
         executable: /bin/bash

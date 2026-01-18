@@ -37,8 +37,8 @@
 - security.tf
 - variables.tf
 - bootstrap.tf
-- user_data_controller.sh
-- user_data_node.sh
+- user_data_controller.sh *Install all prerequisites and write SSH Key*
+- user_data_node.sh *Install all prerequisites and write SSH Key*
 - outputs.tf
 
 ### Ansible Structure
@@ -58,16 +58,22 @@
 git clone https://github.com/Infratify/lab-final-project 
 ```
 ```bash
-aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin <ECR-id>.dkr.ecr.ap-southeast-1.amazonaws.com/<ECR-Container-Name> *Get in AWS Console view push commands*
+mv lab-final-project docker
+```
+```bash
+cd docker
+```
+```bash
+aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin <ECR-id>.dkr.ecr.ap-southeast-1.amazonaws.com/<ECR-Container-Name> #Get in AWS Console view push commands
 ```
 ```bash
 docker build -t devops-bootcamp-project-syedazam .
 ```
 ```bash
-docker tag <ECR-Container-Name>:latest <ECR-id>.dkr.ecr.ap-southeast-1.amazonaws.com/<ECR-Container-Name> *Get in AWS Console view push commands*
+docker tag <ECR-Container-Name>:latest <ECR-id>.dkr.ecr.ap-southeast-1.amazonaws.com/<ECR-Container-Name> #Get in AWS Console view push commands
 ```
 ```bash
-- docker push <ECR-id>.dkr.ecr.ap-southeast-1.amazonaws.com/<ECR-Container-Name> *Get in AWS Console view push commands*
+- docker push <ECR-id>.dkr.ecr.ap-southeast-1.amazonaws.com/<ECR-Container-Name> #Get in AWS Console view push commands
 ```
 
 ---
@@ -125,15 +131,23 @@ git clone https://github.com/Lexxick/devops-bootcamp-project.git
 ```bash
 cd devops-bootcamp-project/ansible
 ```
+#### Ubuntu/devop-bootcamp-project/ansible/group_vars/cloudflare_token.yml
 ```bash
-nano cloudflare_token.yml #Ubuntu/devop-bootcamp-project/ansible/group_vars/cloudflare_token.yml
+cd group_vars
+```
+```bash
+nano cloudflare_token.yml 
 ```
 #### Paste Inside cloudflare_token.yml
 ```bash
 cloudflared_tunnel_token: "TOKEN_FROM_LOCAL_CLOUDFLARE_TOKEN.YML"
 ```
+#### Run Playbook
 ```bash
-ansible-playbook playbooks/site.yml
+cd ../playbooks
+```
+```bash
+ansible-playbook /site.yml
 ```
 
 ---
@@ -155,19 +169,42 @@ ansible-playbook playbooks/site.yml
 
 ## 	Prometheus Dashboard
 
-### Explain MORE!!!
+### Boring Easy Approach
+- Import
 
+---
+
+## 	Git Hub Action Docker Build
+
+### AWS Console
+- Create Iam User
+- Attach Permission
+	> AmazonEC2ContainerRegistryFullAccess
+	> AmazonSSMFullAccess
+- Create Acces Key
+
+### Add GitHub Secrets (so Actions can login to AWS)
+- AWS_ACCESS_KEY_ID = (secret)
+- AWS_SECRET_ACCESS_KEY = (secret)
+- AWS_REGION = ap-southeast-1
+- AWS_ACCOUNT_ID = (secret)
+- ANSIBLE_CONTROLLER_ID = (i-ooooyourownec2idoooo)
 
 ---
 
 ## 	Change DevOps Engineer > Syed Azam
 
 ### Local
-- cd lab-final-project
 - docker-compose.yml > USER_NAME=${USER_NAME:-DevOps Engineer} > USER_NAME=${USER_NAME:-Syed Azam}
-
-###	Docker Build Update Name
--  Explain MORE!!
+```bash
+- git add .
+```
+```bash
+- git commit -m "blabla"
+```
+```bash
+- git push 
+```
 
 ---
 
