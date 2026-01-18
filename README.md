@@ -1,4 +1,4 @@
-# DevOps Bootcamp Final Project
+# 🚀 DevOps Bootcamp Final Project
 **Project Name:** Trust Me, I’m a DevOps Engineer
 
 ---
@@ -19,15 +19,15 @@
 
 ---
 
-## Local Setup
+## 💻 Local Setup
 
-### Git
+### 🛠 Git
 - .gitignore
 - .github/workflows
 	> pages.yml
 	> ecr-build-push.yml
 
-### Terraform Structure
+### 🏗 Terraform Structure
 - providers.tf
 - iam.tf
 - backend.tf
@@ -41,7 +41,7 @@
 - user_data_node.sh *Install all prerequisites and write SSH Key*
 - outputs.tf
 
-### Ansible Structure
+### 🤖 Ansible Structure
 - playbooks
 	> site.yml
 	> web.yml
@@ -53,7 +53,7 @@
 	> docker-compose.yml.j2
 	>prometheus.yml.j2
 
-### Docker Image to ECR
+### 📦 Docker Image to ECR
 ```bash
 git clone https://github.com/Infratify/lab-final-project 
 ```
@@ -82,20 +82,20 @@ docker tag <ECR-Container-Name>:latest <ECR-id>.dkr.ecr.ap-southeast-1.amazonaws
 
 All infrastructure is provisioned using **Terraform** in `ap-southeast-1`.
 
-### Network
+### 🌐 Network
 - VPC: `10.0.0.0/24`
 - Public Subnet: `10.0.0.0/25`
 - Private Subnet: `10.0.0.128/25`
 - Internet Gateway + NAT Gateway
 
-### EC2 Instances
+### 🖥 EC2 Instances
 | Role | Private IP | Access |
 |----|----|----|
 | Web Server | 10.0.0.5 | Public (EIP) |
 | Ansible Controller | 10.0.0.135 | Private (SSM only) |
 | Monitoring Server | 10.0.0.136 | Private (Cloudflare Tunnel) |
 
-### Notes
+### 📝 Notes
 - Terraform state stored in **S3**
 - `user_data_controller.sh` installs Ansible and prepares inventory
 - `user_data_node.sh` installs Docker and Node Exporter
@@ -107,18 +107,18 @@ All infrastructure is provisioned using **Terraform** in `ap-southeast-1`.
 
 All Ansible tasks are executed from the **Ansible Controller**.
 
-### Web Server
+### 🚀 Web Server
 - Docker installed
 - Application container deployed
 - Node Exporter running on port `9100`
 
-### Monitoring Server
+### 📈 Monitoring Server
 - Docker installed
 - Prometheus + Grafana deployed using Docker Compose
 - Prometheus scrapes Web Server metrics
 - Grafana exposed securely via **Cloudflare Tunnel**
 
-### Run Ansible
+### ⌨️ Run Ansible
 ```bash
 aws ssm start-session --target <ANSIBLE_CONTROLLER_INSTANCE_ID>
 ```
@@ -152,38 +152,42 @@ ansible-playbook /site.yml
 
 ---
 
-## Cloudflare + Cloudflare Tunnel (ZeroTrust)
+## ☁️ Cloudflare + Cloudflare Tunnel (ZeroTrust)
 
-### Dns Record
-- Type A : Web : (IP)
-- Type A : Web : (IP)
+### 🛰 Dns Record
+- Type A : Web : (Web ec2 Elastic IP) *if destory infra need to change new*
 - Type Cname : Monitoring : (from tunnel)
 
-### SSL/TLS
+### 🔒 SSL/TLS
 - Set to Flexible (per project task)
 
-### Zero Trust (Tunnel)
+### 🛡 Zero Trust (Tunnel)
 - monitoring-tunnel
 
 ---
 
-## 	Prometheus Dashboard
+## 📊 	Prometheus Dashboard
 
 ### Boring Easy Approach
 - Import
+- Prometheus Source = 
 
 ---
 
-## 	Git Hub Action Docker Build
+## 🤖 	Git Hub Action Docker Build
 
-### AWS Console
+### 🔐 AWS Console
 - Create Iam User
 - Attach Permission
 	> AmazonEC2ContainerRegistryFullAccess
 	> AmazonSSMFullAccess
 - Create Acces Key
 
-### Add GitHub Secrets (so Actions can login to AWS)
+### 💻 Local
+- In .github/workflows
+	> ecr-build-push.yml
+
+### 🔑 Add GitHub Secrets (so Actions can login to AWS)
 - AWS_ACCESS_KEY_ID = (secret)
 - AWS_SECRET_ACCESS_KEY = (secret)
 - AWS_REGION = ap-southeast-1
@@ -192,9 +196,9 @@ ansible-playbook /site.yml
 
 ---
 
-## 	Change DevOps Engineer > Syed Azam
+## 👤 Change DevOps Engineer > Syed Azam
 
-### Local
+### 💻 Local
 - docker-compose.yml > USER_NAME=${USER_NAME:-DevOps Engineer} > USER_NAME=${USER_NAME:-Syed Azam}
 ```bash
 - git add .
@@ -208,7 +212,7 @@ ansible-playbook /site.yml
 
 ---
 
-## Documentation (local to git hub pages)
+## 📖 Documentation (local to git hub pages)
 
 ### Docs/README.md
 - index.html
