@@ -192,7 +192,7 @@ ansible-playbook /site.yml
 - AWS_SECRET_ACCESS_KEY = (secret)
 - AWS_REGION = ap-southeast-1
 - AWS_ACCOUNT_ID = (secret)
-- ANSIBLE_CONTROLLER_ID = (i-ooooyourownec2idoooo)
+- ANSIBLE_CONTROLLER_INSTANCE_ID = (i-ooooyourownec2idoooo)
 
 ---
 
