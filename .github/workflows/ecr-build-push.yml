@@ -66,6 +66,7 @@ jobs:
           CONTROLLER_ID: ${{ secrets.ANSIBLE_CONTROLLER_INSTANCE_ID }}
         run: |
           set -eux
+          echo "Controller ID is: ${CONTROLLER_ID}"
 
           COMMAND_ID=$(aws ssm send-command \
             --region "${AWS_REGION}" \

@@ -11,7 +11,7 @@ COPY assets/ /usr/share/nginx/html/
 RUN mv /usr/share/nginx/html/index.html /usr/share/nginx/html/index.html.template
 
 # Set default environment variable
-ENV USER_NAME="DevOps Engineer"
+ENV USER_NAME="SyedAzam"
 
 # Copy startup script
 COPY start.sh /start.sh
